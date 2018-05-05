@@ -127,14 +127,13 @@
         lastName: null,
         email: null,
         birthDate: null,
-        credit: null,
+        credit: 0.00,
         password: null,
         passwordValidate: null,
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
         genders: ['M', 'F'],
-        gender: null,
         isLoading: false,
         isSubmitting: false
       }
@@ -267,7 +266,10 @@
       }
     },
     created: function () {
-      this.loadData()
+      return this.loadData()
+        .then(() => {
+          this.firstFieldFocus()
+        })
     }
   }
 </script>

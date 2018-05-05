@@ -133,8 +133,8 @@
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
-        genders: ['M', 'F'],
         gender: null,
+        genders: ['M', 'F'],
         isLoading: false,
         isSubmitting: false
       }
@@ -267,7 +267,7 @@
       }
     },
     created: function () {
-      this.loadData()
+      return this.loadData()
     }
   }
 </script>
