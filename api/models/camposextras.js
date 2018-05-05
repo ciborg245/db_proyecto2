@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var camposextras = sequelize.define('camposextras', {
-    idcliente: DataTypes.INTEGER,
+    id_cliente: DataTypes.INTEGER,
     columna: DataTypes.STRING,
     valor: DataTypes.STRING
   }, {});

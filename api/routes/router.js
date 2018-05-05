@@ -3,12 +3,12 @@ const router = express.Router();
 const clientesController = require('../controllers/clientes');
 
 
-
 router.get('/', function(req, res) {res.send("welcome")});
 
-router.post('/createUser', clientesController.createCliente);
-
-router.post('/updateUser', clientesController.updateCliente);
-
+//Rutas de clientes
+router.post('/createCliente', clientesController.createCliente)
+router.post('/updateCliente', clientesController.updateCliente)
+router.post('/deleteCliente', clientesController.deleteCliente)
+router.post('/getClientes', clientesController.getClientes)
 
 module.exports = router;

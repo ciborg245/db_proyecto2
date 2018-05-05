@@ -5,13 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     genero: DataTypes.STRING,
     fechanacimiento: DataTypes.DATEONLY,
     correo: DataTypes.STRING,
-    telefono: DataTypes.INTEGER,
+    telefono: DataTypes.STRING,
     direccion: DataTypes.STRING,
     limitecredito: DataTypes.DOUBLE,
     foto: DataTypes.STRING,
-    twitterId: DataTypes.INTEGER,
-    idtipocliente: DataTypes.INTEGER,
-    idproducto: DataTypes.INTEGER
+    id_twitter: DataTypes.INTEGER,
+    id_tipocliente: DataTypes.INTEGER,
+    id_producto: DataTypes.INTEGER
   }, {});
   clientes.associate = function(models) {
     // associations can be defined here

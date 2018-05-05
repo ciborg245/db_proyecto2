@@ -13,15 +13,15 @@ clientesController.createCliente = function(req, res) {
         direccion: req.body.direccion,
         limitecredito: req.body.limitecredito,
         foto: req.body.foto,
-        twitterId: req.body.twitterId,
-        idtipocliente: req.body.idtipocliente,
-        idproducto: req.body.idproducto
+        id_twitter: req.body.id_twitter,
+        id_tipocliente: req.body.id_tipocliente,
+        id_producto: req.body.id_producto
     }).then(cliente => res.send({success: true, msg: cliente}) )
     .catch(error => res.send({success: false, msg: error}))
 }
 
 clientesController.updateCliente = function(req, res) {
-    var query = "UPDATE clientes SET ";
+    let query = "UPDATE clientes SET ";
     for (var prop in req.body)
         if (req.body.hasOwnProperty(prop) && prop != "id") {
             if (typeof req.body[prop] != "number") {
@@ -40,6 +40,41 @@ clientesController.updateCliente = function(req, res) {
             msg : "Cliente actualizado."
         })
     }).catch(error => res.send({success: false, msg: error}));
+}
+
+clientesController.deleteCliente = function(req, res) {
+    let query = `DELETE FROM clientes WHERE id = ${req.body.id}`;
+
+    db.sequelize.query(query).spread((results, metadata) => {
+        res.send({
+            success : true,
+            msg : "Cliente borrado."
+        })
+    }).catch(error => res.send({success: false, msg: error}));
+}
+
+clientesController.getClientes = function(req, res) {
+    let query = `SELECT * FROM clientes`;
+
+    if (req.body.orderby) {
+        query += ` ORDER BY ${req.body.orderby} `
+    }
+
+    if (req.body.limit) {
+        query += ` LIMIT ${req.body.limit} `
+    }
+
+    if (req.body.offset) {
+        query += ` OFFSET ${req.body.offset} `
+    }
+
+    db.sequelize.query(query, {model: clientes}).then(rows => {
+        res.send({
+            success: true,
+            msg: rows
+        })
+    }).catch(error => res.send({success: false, msg: error}));
+
 }
 
 module.exports = clientesController;
