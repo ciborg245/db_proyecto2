@@ -9,10 +9,14 @@
         </div>
       </div>
     </section>
-    <section style="margin-top: 10px">
+    <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
-
+          <FormInput label="Nombre"/>
+          <FormCheckbox label="Ordenar por nombre"/>
+          <div class="control">
+              <button class="button is-success">Aplicar</button>
+          </div>
         </div>
         <div class="box">
           <table class="table is-fullwidth is-striped is-hoverable">
@@ -30,7 +34,7 @@
             <tbody>
               <tr v-for="client in clients">
                 <td> <a @click="gotoClient(client.id)">{{client.id}}</a>  </td>
-                <td> {{client.name}} </td>
+                <td> {{client.firstName}} </td>
                 <td> {{client.email}} </td>
                 <td> {{client.gender}} </td>
                 <td> {{client.phone}} </td>
@@ -116,7 +120,11 @@
         this.showConfirm = false
       },
       loadData: function () {
-
+        this.clients = []
+        return this.$store.dispatch('clients_get')
+          .then((clientes) => {
+            this.clients = clientes
+          })
       },
       confirmDelete: function (id) {
         this.toDelete = id
@@ -137,6 +145,13 @@
             // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>
