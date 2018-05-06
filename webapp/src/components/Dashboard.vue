@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box caja">
+          <div class="box caja" v-on:click="gotoProducts">
             <p>Productos</p>
             <hr>
             <span class="icon">
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box caja">
+          <div class="box caja" v-on:click="gotoStates">
             <p>Departamentos</p>
             <hr>
             <span class="icon">
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box caja">
+          <div class="box caja" v-on:click="gotoStores">
             <p>Sucursales</p>
             <hr>
             <span class="icon">
@@ -84,11 +84,6 @@
           </div>
         </div>
       </div>
-
-      <confirm-modal :show-confirm="showConfirm"
-                         confirm-msg="¿Realmente desea remover esta base de datos?"
-                         @accept=""
-                         @cancel=""/>
     </div>
   </div>
 
@@ -112,14 +107,7 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        sqlQuery: null,
-        database: null,
-        columns: [],
-        registers: [],
-        constraints: [],
         responses: null,
-        showTables: false,
-        showColumns: false,
         showNotificationSuccess: false,
         showNotificationDanger: false,
         showSelected: false,
@@ -131,15 +119,21 @@
       }
     },
 
-    // Metodos de la Webapp
-    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
-    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
       gotoNew: function () {
         this.$router.push({name: 'NewClient'})
       },
       gotoUsers: function () {
         this.$router.push({name: 'Clients'})
+      },
+      gotoProducts: function () {
+        this.$router.push({name: 'Products'})
+      },
+      gotoStores: function () {
+        this.$router.push({name: 'Stores'})
+      },
+      gotoStates: function () {
+        this.$router.push({name: 'States'})
       },
       cancelConfirm: function () {
         this.sqlQuery = null

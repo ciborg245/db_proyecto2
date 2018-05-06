@@ -4,14 +4,14 @@ const config = {
   local: {
     domain: 'localhost',
     root: 'http://localhost:8080',
-    apiRoot: 'http://localhost:3000',
+    apiRoot: 'http://localhost:3000/api',
     cookieDomain: 'localhost',
     cookieSecure: false,
     analytics: '',
     forgotCallback: '/#/reset'
   },
 
-  apiTables: '/databases/{db}/tables',
+  apiClients: '/clients',
   apiDatabases: '/databases',
   apiQuery: '/databases/queries'
 }
