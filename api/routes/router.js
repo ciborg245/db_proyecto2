@@ -8,7 +8,7 @@ const departamentosController = require('../controllers/departamentos')
 router.get('/', function(req, res) {res.send("welcome")});
 
 //Rutas para Clientes
-router.post('/createCliente', clientesController.createCliente)
+router.post('/clients', clientesController.createCliente)
 router.get('/clients', clientesController.getClientes)
 router.put('/updateCliente', clientesController.updateCliente)
 router.delete('/deleteCliente', clientesController.deleteCliente)

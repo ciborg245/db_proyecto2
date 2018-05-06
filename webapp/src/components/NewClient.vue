@@ -258,19 +258,29 @@
         const data = {
           firstName: this.firstName,
           email: this.email,
-          password: this.password
+          phone: this.phone,
+          address: this.address,
+          image: this.image,
+          twitterId: this.twitterId,
+          credit: this.credit,
+          birthdate: this.birthDate,
+          gender: this.gender
         }
+        /*
         if (this.lastNameIsSet) {
           data.lastName = this.lastName
         }
-
+        */
+        this.isSubmitting = true
         return this
-          .$store.dispatch('register', data)
+          .$store.dispatch('client_new', data)
           .then((response) => {
             console.log(response)
+            this.isSubmitting = false
             this.$router.push({name: 'Dashboard'})
           })
           .catch(err => {
+            this.isSubmitting = false
             throw err
           })
       },
