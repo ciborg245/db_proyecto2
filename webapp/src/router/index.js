@@ -4,6 +4,7 @@ import Dashboard from '@/components/Dashboard'
 import NewClient from '@/components/NewClient'
 import Clients from '@/components/Clients'
 import Client from '@/components/Client'
+import Twitter from '@/components/Twitter'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router(
         path: '/client',
         name: 'Client',
         component: Client
+      },
+      {
+        path: '/twitter',
+        name: 'Twitter',
+        component: Twitter
       }
     ]
   },

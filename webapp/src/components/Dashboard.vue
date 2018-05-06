@@ -1,6 +1,20 @@
 <template>
   <div>
     <section class="hero is-medium is-primary is-bold"  id="panito">
+      <div class="hero-head" style="margin-right: 10%" >
+        <div id="navbarMenuHeroB" class="navbar-menu">
+          <div class="navbar-end">
+            <span class="navbar-item">
+              <a class="button is-centered is-info is-medium" v-on:click="goToTwitter">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+                <span>Twitter</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="hero-body">
         <div class="container">
           <h1 class="title sombra">
@@ -9,6 +23,7 @@
           <h2 class="subtitle sombra">
             CRM
           </h2>
+
         </div>
       </div>
     </section>
@@ -129,6 +144,10 @@
       cancelConfirm: function () {
         this.sqlQuery = null
         this.showConfirm = false
+      },
+      goToTwitter: function () {
+        console.log('[ut')
+        this.$router.push({name: 'Twitter'})
       }
     }
   }
