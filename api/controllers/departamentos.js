@@ -45,7 +45,7 @@ departamentosController.deleteDepartamento = function(req, res) {
 }
 
 //Función para recuperar una cantidad X de registros de la base de datos
-clientesController.getDepartamentos = function(req, res) {
+departamentosController.getDepartamentos = function(req, res) {
     //Se empieza a construir el query
     let query = `SELECT * FROM departamentos`;
 

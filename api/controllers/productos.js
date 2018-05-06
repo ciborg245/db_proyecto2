@@ -44,7 +44,7 @@ productosController.deleteProducto = function(req, res) {
 }
 
 //Función para recuperar una cantidad X de registros de la base de datos
-clientesController.getProductos = function(req, res) {
+productosController.getProductos = function(req, res) {
     //Se empieza a construir el query
     let query = `SELECT * FROM productos`;
 

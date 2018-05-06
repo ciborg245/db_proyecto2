@@ -44,7 +44,7 @@ sucursalesController.deleteSucursal = function(req, res) {
 }
 
 //Función para recuperar una cantidad X de registros de la base de datos
-clientesController.getSurcursales = function(req, res) {
+sucursalesController.getSucursales = function(req, res) {
     //Se empieza a construir el query
     let query = `SELECT * FROM sucursales`;
 

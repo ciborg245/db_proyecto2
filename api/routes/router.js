@@ -17,13 +17,13 @@ router.delete('/deleteCliente', clientesController.deleteCliente)
 router.get('/getProductos/:orderby/:offset', productosController.getProductos)
 router.put('/updateProducto', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
-
-//Rutas para Sucursales
+//
+// //Rutas para Sucursales
 router.get('/getSucursales/:orderby/:offset', sucursalesController.getSucursales)
 router.put('/updateSucursal', sucursalesController.updateSucursal)
 router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
-
-//Rutas para Departamentos
+//
+// //Rutas para Departamentos
 router.get('/getDepartamentos/:orderby/:offset', departamentosController.getDepartamentos)
 router.put('/updateDepartamento', departamentosController.updateDepartamento)
 router.delete('deleteDepartamento', departamentosController.deleteDepartamento)
