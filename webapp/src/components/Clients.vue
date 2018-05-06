@@ -12,6 +12,9 @@
     <section style="margin-top: 10px">
       <div class="container">
         <div class="box">
+
+        </div>
+        <div class="box">
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
@@ -91,7 +94,7 @@
             credit: 12.0
           }],
         notificationMessage: null,
-        isLoading: true,
+        isLoading: false,
         showConfirm: false,
         toDelete: null,
         confirmMsg: null

@@ -37,50 +37,45 @@
                          icon="phone"
                          label="Teléfono"
                          place-holder="Número telefónico"
-                         v-model="email"
+                         v-model="phone"
                          :max-length="255"
                          :is-required="true"
-                         :is-success="emailIsSuccess"
-                         :is-danger="emailIsDanger"
-                         :error-msg="emailErrorMsg"/>
+                         :is-success="phoneIsSuccess"
+                         :is-danger="phoneIsDanger"/>
                 <FormInput type="text"
                           icon="map-marker"
                           label="Dirección"
                           place-holder="Ingrese la dirección del cliente"
-                          v-model="email"
+                          v-model="address"
                           :max-length="255"
                           :is-required="true"
-                          :is-success="emailIsSuccess"
-                          :is-danger="emailIsDanger"
-                          :error-msg="emailErrorMsg"/>
+                          :is-success="addressIsSuccess"
+                          :is-danger="addressIsDanger"/>
                 <FormInput type="text"
                            icon="picture-o"
                            label="Imagen"
                            place-holder="Ingrese el url de la foto del usuario"
-                           v-model="firstName"
+                           v-model="image"
                            :is-required="true"
-                           :is-success="firstNameIsSuccess"
-                           :is-danger="firstNameIsDanger"
-                           :error-msg="firstNameErrorMsg"/>
+                           :is-success="imageIsSuccess"
+                           :is-danger="imageIsDanger"/>
                 <FormInput type="text"
                            icon="twitter"
                            label="Twitter"
                            place-holder="Ingrese su cuenta de twitter"
-                           v-model="email"
+                           v-model="twitterId"
                            :max-length="255"
                            :is-required="true"
-                           :is-success="emailIsSuccess"
-                           :is-danger="emailIsDanger"
-                           :error-msg="emailErrorMsg"/>
+                           :is-success="twitterIdIsSuccess"
+                           :is-danger="twitterIdIsDanger"/>
                 <FormInput type="number"
                            icon="money"
                            label="Límite de crédito"
                            v-model="credit"
                           :max-length="255"
                            :is-required="true"
-                           :is-success="emailIsSuccess"
-                           :is-danger="emailIsDanger"
-                           :error-msg="emailErrorMsg"/>
+                           :is-success="creditIsSuccess"
+                           :is-danger="creditIsDanger"/>
                 <DateChooser label="Fecha de nacimiento"
                               v-model="birthDate"
                               icon="calendar"/>
@@ -124,17 +119,18 @@
     data () {
       return {
         firstName: null,
-        lastName: null,
         email: null,
-        birthDate: null,
+        phone: null,
+        address: null,
+        image: null,
+        twitterId: null,
         credit: null,
-        password: null,
-        passwordValidate: null,
+        birthDate: null,
+        gender: null,
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
         genders: ['M', 'F'],
-        gender: null,
         isLoading: false,
         isSubmitting: false
       }
@@ -157,23 +153,11 @@
       firstNameIsDanger: function () {
         return (this.firstNameIsSet && !this.firstNameIsValid)
       },
-      lastNameIsSet: function () {
-        return (this.lastName !== null)
-      },
-      lastNameIsValid: function () {
-        if (!this.lastNameIsSet || this.lastName.trim().length <= 0) {
-          return false
-        }
-        return true
-      },
-      lastNameIsSuccess: function () {
-        return (this.lastNameIsSet && this.lastNameIsValid)
-      },
       emailIsSet: function () {
         return (this.email !== null)
       },
       emailIsValid: function () {
-        if (!this.emailIsSet || !Validator.isEmail(this.email)) {
+        if (!this.emailIsSet || !Validator.isEmail(this.email) || this.email.trim().length <= 0) {
           this.emailErrorMsg = 'Debe ingresar un correo válido'
           return false
         }
@@ -185,40 +169,80 @@
       emailIsDanger: function () {
         return (this.emailIsSet && !this.emailIsValid)
       },
-      passwordIsSet: function () {
-        return (this.password !== null)
+      phoneIsSet: function () {
+        return this.phone !== null
       },
-      passwordIsValid: function () {
-        if (!this.passwordIsSet || this.password.trim().length <= 0) {
+      phoneIsValid: function () {
+        if (!this.phoneIsSet || !Validator.isNumeric(this.phone) || this.phone.trim().length <= 0) {
           return false
         }
         return true
       },
-      passwordIsSuccess: function () {
-        return (this.passwordIsSet && this.passwordIsValid)
+      phoneIsSuccess: function () {
+        return this.phoneIsSet && this.phoneIsValid
       },
-      passwordIsDanger: function () {
-        return (this.passwordIsSet && !this.passwordIsValid)
+      phoneIsDanger: function () {
+        return this.phoneIsSet && !this.phoneIsValid
       },
-      passwordValidateIsSet: function () {
-        return (this.passwordValidate !== null)
+      addressIsSet: function () {
+        return this.address !== null
       },
-      passwordValidateIsValid: function () {
-        if (!this.passwordValidateIsSet || this.passwordValidate.trim().length <= 0) {
-          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
-          return false
-        }
-        if (this.password !== this.passwordValidate) {
-          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
+      addressIsValid: function () {
+        if (!this.addressIsSet || this.address.trim().length <= 0) {
           return false
         }
         return true
       },
-      passwordValidateIsSuccess: function () {
-        return (this.passwordValidateIsSet && this.passwordValidateIsValid)
+      addressIsSuccess: function () {
+        return this.addressIsSet && this.addressIsValid
       },
-      passwordValidateIsDanger: function () {
-        return (this.passwordValidateIsSet && !this.passwordValidateIsValid)
+      addressIsDanger: function () {
+        return this.addressIsSet && !this.addressIsValid
+      },
+      imageIsSet: function () {
+        return this.image !== null
+      },
+      imageIsValid: function () {
+        if (!this.imageIsSet || this.image.trim().length <= 0) {
+          return false
+        }
+        return true
+      },
+      imageIsSuccess: function () {
+        return this.imageIsSet && this.imageIsValid
+      },
+      imageIsDanger: function () {
+        return this.imageIsSet && !this.imageIsValid
+      },
+      twitterIdIsSet: function () {
+        return this.twitterId !== null
+      },
+      twitterIdIsValid: function () {
+        if (!this.twitterIdIsSet || this.twitterId.trim().length <= 0) {
+          return false
+        }
+        return true
+      },
+      twitterIdIsSuccess: function () {
+        return this.twitterIdIsSet && this.twitterIdIsValid
+      },
+      twitterIdIsDanger: function () {
+        return this.twitterIdIsSet && !this.twitterIdIsValid
+      },
+      creditIsSet: function () {
+        return this.credit !== null
+      },
+      creditIsValid: function () {
+        if (!this.creditIsSet || this.credit.trim().length <= 0 || !Validator.isNumeric(this.credit)) {
+          return false
+        }
+        return true
+      },
+      creditIsSuccess: function () {
+        return this.creditIsSet && this.creditIsValid
+      },
+      creditIsDanger: function () {
+        return this.creditIsSet && !this.creditIsValid
       }
     },
 
@@ -251,7 +275,15 @@
           })
       },
       validForm: function () {
-        return true
+        this.firstName = this.firstName || ''
+        this.email = this.email || ''
+        this.address = this.address || ''
+        this.phone = this.phone || ''
+        this.image = this.image || ''
+        this.credit = this.credit || ''
+
+        return this.firstNameIsValid && this.emailIsValid && this.phoneIsValid &&
+        this.addressIsValid && this.imageIsValid && this.creditIsValid
       },
       getGenders: function () {
         this.genders = [
@@ -264,6 +296,9 @@
             text: 'Femenino'
           }
         ]
+      },
+      getStates: function () {
+
       }
     },
     created: function () {
