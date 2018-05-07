@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="columns">
+    <div class="columns" v-show="!isLoading">
       <div class="column">
         <div class="card">
           <div class="card-content">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-
+    <loader :is-loading="isLoading"/>
   </div>
 
 </template>
@@ -86,8 +86,28 @@
         */
       },
       getClientData: function () {
-
+        const data = {
+          clientId: this.clientId
+        }
+        return this.$store.dispatch('client_getOne', data)
+          .then((client) => {
+            this.name = client.firstName
+            this.twitterId = client.twitterId
+            this.email = client.email
+            this.gender = client.gender
+            this.address = client.address
+            this.phone = client.phone
+            this.birthdate = client.birthdate
+            this.credit = client.credit
+          })
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

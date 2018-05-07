@@ -36,7 +36,7 @@ clientesController.updateCliente = function(req, res) {
 
     //Después de terminar el SET, se agrega la condición de WHERE
     query = query.substring(0, query.length-2)
-        + ` WHERE id = ${req.body.id};`;
+        + ` WHERE id = ${req.params.clientId};`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
@@ -50,7 +50,7 @@ clientesController.updateCliente = function(req, res) {
 //Función para borrar un registro de Clientes
 clientesController.deleteCliente = function(req, res) {
     //Se construye el query
-    let query = `DELETE FROM clientes WHERE id = ${req.body.id}`;
+    let query = `DELETE FROM clientes WHERE id = ${req.params.clientId}`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
@@ -84,7 +84,25 @@ clientesController.getClientes = function(req, res) {
             msg: rows
         })
     }).catch(error => res.status(404).send({success: false, msg: error}));
+}
 
+clientesController.getClientById = function (req, res) {
+  const clientId = req.params.clientId
+  const sql = `SELECT * FROM clientes WHERE id = :clientId`
+
+  return db.sequelize
+    .query(sql, {
+      type: db.sequelize.QueryTypes.SELECT,
+      replacements: {
+        clientId: clientId
+      }
+    })
+    .then((client) => {
+      res.json({success: true, msg: client})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
 }
 
 module.exports = clientesController;

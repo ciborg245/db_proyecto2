@@ -256,7 +256,7 @@
           return
         }
         const data = {
-          firstName: this.firstName,
+          name: this.firstName,
           email: this.email,
           phone: this.phone,
           address: this.address,

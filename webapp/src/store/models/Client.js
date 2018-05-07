@@ -5,7 +5,7 @@ import Blood from '@/store/models/Blood'
 import Country from '@/store/models/Country'
 import Phone from '@/store/models/Phone'
 */
-export default class User {
+export default class Client {
   constructor () {
     this.id = ''
     this.email = ''

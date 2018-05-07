@@ -12,8 +12,8 @@ const config = {
   },
 
   apiClients: '/clients',
-  apiDatabases: '/databases',
-  apiQuery: '/databases/queries'
+  apiClientId: '/clients/{clientId}',
+  apiProducts: '/products'
 }
 
 export default config

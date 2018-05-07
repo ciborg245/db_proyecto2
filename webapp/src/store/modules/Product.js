@@ -1,5 +1,6 @@
 import config from '@/settings/config'
 import api from '@/store/utils/api'
+import Product from '@/store/models/Product'
 
 const state = {}
 
@@ -32,8 +33,30 @@ const actions = {
         })
     })
   },
-  product_new (context, data = {}) {
+  products_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
 
+    let url = apiRoot + config.apiProducts
+
+    return new Promise((resolve, reject) => {
+      api
+        .get(url)
+        .then((response) => {
+          const data = response.data || {}
+          const productsData = data.msg || {}
+          let products = []
+          for (const productData of productsData) {
+            const newProduct = new Product()
+            newProduct.initWithData(productData)
+            products.push(newProduct)
+          }
+          resolve(products)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   },
   product_edit (context, data = {}) {
 

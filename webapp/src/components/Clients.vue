@@ -64,7 +64,7 @@
     </section>
     <loader :is-loading="isLoading"/>
     <confirm-modal :show-confirm="showConfirm"
-                   confirm-msg="¿Realmente desea eliminar este registro?"
+                   confirm-msg="¿Realmente desea eliminar este cliente?"
                    @accept="deleteClient"
                    @cancel="cancelConfirm"/>
   </div>
@@ -113,7 +113,7 @@
         this.$router.push({name: 'NewClient'})
       },
       gotoClient: function (id) {
-        this.$router.push({ name: 'Client', query: {user: id} })
+        this.$router.push({ name: 'Client', query: {id: id} })
       },
       cancelConfirm: function () {
         this.toDelete = null
@@ -130,11 +130,11 @@
         this.toDelete = id
         this.showConfirm = true
       },
-      deleteClient: function (id) {
+      deleteClient: function () {
         this.showConfirm = false
         return this
           .$store.dispatch('client_delete', {
-            userId: id
+            clientId: this.toDelete
           })
           .then(() => {
             this.toDelete = null

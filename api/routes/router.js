@@ -10,11 +10,12 @@ router.get('/', function(req, res) {res.send("welcome")});
 //Rutas para Clientes
 router.post('/clients', clientesController.createCliente)
 router.get('/clients', clientesController.getClientes)
-router.put('/updateCliente', clientesController.updateCliente)
-router.delete('/deleteCliente', clientesController.deleteCliente)
+router.get('/clients/:clientId', clientesController.getClientById)
+router.put('/clients/:clientId/edit', clientesController.updateCliente)
+router.delete('/clients/:clientId', clientesController.deleteCliente)
 
 //Rutas para Productos
-router.get('/getProductos/:orderby/:offset', productosController.getProductos)
+router.get('/products', productosController.getProductos)
 router.put('/updateProducto', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
 //

@@ -9,7 +9,7 @@
         </div>
       </div>
     </section>
-    <section style="margin-top: 10px">
+    <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
           <table class="table is-fullwidth is-striped is-hoverable">
@@ -18,6 +18,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th>Categoría</th>
               </tr>
             </thead>
             <tbody>
@@ -25,6 +26,7 @@
                 <td> <a @click="gotoProduct(product.id)">{{product.id}}</a>  </td>
                 <td> {{product.name}} </td>
                 <td> {{product.price}} </td>
+                <td> {{product.category}} </td>
                 <td style="text-align: right">
                   <p class="field">
                     <a class="button is-danger" @click="confirmDelete(product.id)">
@@ -98,7 +100,11 @@
         this.showConfirm = false
       },
       loadData: function () {
-
+        this.products
+        return this.$store.dispatch('products_get')
+          .then((products) => {
+            this.products = products
+          })
       },
       confirmDelete: function (id) {
         this.toDelete = id
@@ -119,6 +125,13 @@
             // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>
