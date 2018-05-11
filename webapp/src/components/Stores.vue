@@ -11,20 +11,20 @@
     </section>
     <section style="margin-top: 10px">
       <div class="container">
-        <div class="box">
+        <div class="box" v-show="!isLoading">
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Dirección</th>
                 <th>Departamento</th>
+                <th>Dirección</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="store in stores">
                 <td> <a @click="gotoStore(store.id)">{{store.id}}</a>  </td>
-                <td> {{store.name}} </td>
-                <td> {{store.price}} </td>
+                <td> {{store['id_depto']}} </td>
+                <td> {{store.direccion}} </td>
                 <td style="text-align: right">
                   <p class="field">
                     <a class="button is-danger" @click="confirmDelete(store.id)">
@@ -72,12 +72,7 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        stores: [
-          {
-            id: 1,
-            address: '10a calle B',
-            state: 3
-          }],
+        stores: [],
         notificationMessage: null,
         isLoading: false,
         showConfirm: false,
@@ -98,7 +93,10 @@
         this.showConfirm = false
       },
       loadData: function () {
-
+        return this.$store.dispatch('stores_get')
+          .then((stores) => {
+            this.stores = stores
+          })
       },
       confirmDelete: function (id) {
         this.toDelete = id
@@ -119,6 +117,13 @@
             // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

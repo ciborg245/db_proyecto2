@@ -86,7 +86,7 @@
                             :list="genders"/>
                 <FormSelectWithSearch icon="building"
                             label="Departamento"
-                            place-holder="Indique departamento"
+                            place-holder="Indique el departamento del cliente"
                             v-model="state"
                             :list="states"/>
                 <FormSelectWithSearch icon="birthday-cake"
@@ -94,6 +94,17 @@
                             place-holder="Indique su producto favorito"
                             v-model="favoriteProduct"
                             :list="products"/>
+                <div v-for="extra in extras" class="box">
+                  <FormInput type="text" v-model="extraFields[extra-1]" label="Campo"/>
+                  <FormInput type="text" v-model="extraValues[extra-1]" label="Valor"/>
+                </div>
+                <div class="notification is-danger" v-show="showExtraFieldError">
+                  El campo extra anterior no fue llenado correctamente
+                </div>
+                <p>{{extraFields}}</p>
+                <p>{{extraValues}}</p>
+                <a class="button is-primary" v-on:click="addField">Agregar campo</a>
+                <a class="button is-danger" @click="removeField">Borrar último campo</a>
               </div>
               <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                 <button type="submit"
@@ -142,9 +153,13 @@
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
+        showExtraFieldError: false,
         states: [],
         products: [],
         genders: [],
+        extraFields: [],
+        extraValues: [],
+        extras: 0,
         isLoading: false,
         isSubmitting: false
       }
@@ -261,6 +276,33 @@
     },
 
     methods: {
+      addField: function () {
+        this.showExtraFieldError = false
+        if (this.extraFields.length !== this.extraValues.length) {
+          this.showExtraFieldError = true
+          return
+        }
+        this.extras++
+      },
+      removeField: function () {
+        if (this.extraFields.length + this.extraValues.length === 0) {
+          if (this.extras > 0) this.extras--
+          return
+        }
+        if (this.extraFields.length === this.extraValues.length && this.extras > this.extraFields.length) {
+          this.extras--
+          return
+        }
+        if (this.extraFields.length > this.extraValues.length) {
+          this.extraFields.pop()
+        } else if (this.extraFields.length < this.extraValues.length) {
+          this.extraValues.pop()
+        } else {
+          this.extraFields.pop()
+          this.extraValues.pop()
+        }
+        this.extras--
+      },
       loadData: function () {
         this.getGenders()
         return this.getStates()
@@ -286,6 +328,21 @@
           state: this.state,
           favoriteProduct: this.favoriteProduct
         }
+        if (this.extraFields.length > 0) {
+          if (this.extraFields.length !== this.extraValues.length) {
+            e.preventDefault()
+            return
+          }
+          let extras = {}
+          for (let i = 0; i < this.extraFields.length; i++) {
+            extras[this.extraFields[i]] = this.extraValues[i]
+          }
+          data.extras = extras
+          /*
+          console.log(data)
+          return
+          */
+        }
         /*
         if (this.lastNameIsSet) {
           data.lastName = this.lastName
@@ -297,7 +354,7 @@
           .then((response) => {
             console.log(response)
             this.isSubmitting = false
-            this.$router.push({name: 'Dashboard'})
+            this.$router.push({name: 'dashboard'})
           })
           .catch(err => {
             this.isSubmitting = false

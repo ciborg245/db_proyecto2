@@ -18,7 +18,8 @@
 
             <div class="content">
               <p><strong>Correo:</strong> {{ email }} </p>
-              <p><strong>Ubicación:</strong> {{ address }} </p>
+              <p><strong>Dirección:</strong> {{ address }} </p>
+              <p><strong>Departamento:</strong> {{ state }} </p>
               <p><strong>Teléfono:</strong> {{ phone }} </p>
               <p><strong>Producto favorito:</strong> {{ favoriteProduct }} </p>
               <p><strong>Sexo:</strong> {{ gender }} </p>
@@ -61,6 +62,7 @@
         credit: 0,
         address: '',
         favoriteProduct: '',
+        state: '',
         isLoading: false,
         clientId: null
       }
@@ -99,6 +101,28 @@
             this.phone = client.phone
             this.birthdate = client.birthdate
             this.credit = client.credit
+            this.favoriteProduct = client.favoriteProduct
+            this.state = client.state || ''
+          })
+          .then(() => {
+            return this.$store.dispatch('products_get')
+          })
+          .then((products) => {
+            for (const product of products) {
+              if (product.id === this.favoriteProduct) {
+                this.favoriteProduct = product.name
+              }
+            }
+          })
+          .then(() => {
+            return this.$store.dispatch('states_get')
+          })
+          .then((states) => {
+            for (const state of states) {
+              if (state.id === this.state) {
+                this.state = state.nombre
+              }
+            }
           })
       }
     },

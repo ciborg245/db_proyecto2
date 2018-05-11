@@ -49,14 +49,14 @@ sucursalesController.getSucursales = function(req, res) {
     let query = `SELECT * FROM sucursales`;
 
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
-    if (req.params.orderby) {
-        query += ` ORDER BY ${req.params.orderby} `
+    if (req.query.orderby) {
+        query += ` ORDER BY ${req.query.orderby} `
     }
 
     query += ` LIMIT 25 `;
 
-    if (req.params.offset) {
-        query += ` OFFSET ${req.params.offset} `
+    if (req.query.offset) {
+        query += ` OFFSET ${req.query.offset} `
     }
 
     //Se realiza el query

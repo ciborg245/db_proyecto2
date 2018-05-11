@@ -14,7 +14,8 @@ const config = {
   apiClients: '/clients',
   apiClientId: '/clients/{clientId}',
   apiProducts: '/products',
-  apiStates: '/states'
+  apiStates: '/states',
+  apiStores: '/stores'
 }
 
 export default config

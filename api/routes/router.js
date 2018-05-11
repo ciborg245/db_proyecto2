@@ -20,13 +20,13 @@ router.put('/updateProducto', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
 //
 // //Rutas para Sucursales
-router.get('/getSucursales/:orderby/:offset', sucursalesController.getSucursales)
+router.get('/stores', sucursalesController.getSucursales)
 router.put('/updateSucursal', sucursalesController.updateSucursal)
 router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
 //
 // //Rutas para Departamentos
 router.get('/states', departamentosController.getDepartamentos)
 router.put('/updateDepartamento', departamentosController.updateDepartamento)
-router.delete('deleteDepartamento', departamentosController.deleteDepartamento)
+router.delete('/deleteDepartamento', departamentosController.deleteDepartamento)
 
 module.exports = router;

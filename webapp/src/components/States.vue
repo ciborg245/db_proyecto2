@@ -17,14 +17,12 @@
               <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Prefijo</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="state in states">
                 <td> {{state.id}}  </td>
-                <td> {{state.name}} </td>
-                <td> {{state.prefix}} </td>
+                <td> {{state.nombre}} </td>
                 <td style="text-align: right">
                   <p class="field">
                     <a class="button is-danger" @click="confirmDelete(state.id)">
@@ -71,12 +69,7 @@
 
     data () {
       return {
-        states: [
-          {
-            id: 1,
-            name: 'Quetzaltenango',
-            prefix: '04'
-          }],
+        states: [],
         notificationMessage: null,
         isLoading: false,
         showConfirm: false,
@@ -86,6 +79,12 @@
     },
 
     methods: {
+      loadData: function () {
+        return this.$store.dispatch('states_get')
+          .then((states) => {
+            this.states = states
+          })
+      },
       gotoNew: function () {
         this.$router.push({name: 'NewState'})
       },
@@ -95,9 +94,6 @@
       cancelConfirm: function () {
         this.toDelete = null
         this.showConfirm = false
-      },
-      loadData: function () {
-
       },
       confirmDelete: function (id) {
         this.toDelete = id
@@ -118,6 +114,13 @@
             // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

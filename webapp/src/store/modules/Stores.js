@@ -37,6 +37,22 @@ const actions = {
   },
   store_edit (context, data = {}) {
 
+  },
+  stores_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiStores
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          if (data.success) {
+            resolve(data.msg)
+          }
+        })
+    })
   }
 }
 

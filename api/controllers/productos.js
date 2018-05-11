@@ -50,13 +50,13 @@ productosController.getProductos = function(req, res) {
 
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
     if (req.query.orderby) {
-        query += ` ORDER BY ${req.params.orderby} `
+        query += ` ORDER BY ${req.query.orderby} `
     }
 
     query += ` LIMIT 25 `;
 
     if (req.query.offset) {
-        query += ` OFFSET ${req.params.offset} `
+        query += ` OFFSET ${req.query.offset} `
     }
 
     //Se realiza el query
