@@ -25,7 +25,7 @@ router.put('/updateSucursal', sucursalesController.updateSucursal)
 router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
 //
 // //Rutas para Departamentos
-router.get('/getDepartamentos/:orderby/:offset', departamentosController.getDepartamentos)
+router.get('/states', departamentosController.getDepartamentos)
 router.put('/updateDepartamento', departamentosController.updateDepartamento)
 router.delete('deleteDepartamento', departamentosController.deleteDepartamento)
 

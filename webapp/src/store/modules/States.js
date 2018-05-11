@@ -10,33 +10,33 @@ const mutations = {}
 // async operations
 const actions = {
   state_delete (context, data = {}) {
-    const env = config.env
-    const apiRoot = config[env].apiRoot
-
-    const query = data.sqlQuery || ''
-
-    let url = apiRoot + config.apiQuery
-
-    const params = {
-      'sql_query': query
-    }
-
-    return new Promise((resolve, reject) => {
-      api
-        .post(url, params)
-        .then(response => {
-          resolve(response)
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
   },
   state_new (context, data = {}) {
 
   },
   state_edit (context, data = {}) {
 
+  },
+  states_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiStates
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          if (data.success) {
+            const states = data.msg || []
+            resolve(states)
+          }
+          console.log(response)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 }
 

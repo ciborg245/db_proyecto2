@@ -44,7 +44,7 @@ const actions = {
     const image = data.image || ''
     const twitterId = data.twitterId || ''
     const clientType = data.clientType || 1
-    const favoriteProduct = data.favoriteProduct || 2
+    const favoriteProduct = data.favoriteProduct || null
 
     const params = {
       'nombre': name,

@@ -13,7 +13,8 @@ const config = {
 
   apiClients: '/clients',
   apiClientId: '/clients/{clientId}',
-  apiProducts: '/products'
+  apiProducts: '/products',
+  apiStates: '/states'
 }
 
 export default config

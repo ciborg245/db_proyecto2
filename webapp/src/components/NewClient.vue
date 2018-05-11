@@ -84,6 +84,16 @@
                             place-holder="Indique su Sexo"
                             v-model="gender"
                             :list="genders"/>
+                <FormSelectWithSearch icon="building"
+                            label="Departamento"
+                            place-holder="Indique departamento"
+                            v-model="state"
+                            :list="states"/>
+                <FormSelectWithSearch icon="birthday-cake"
+                            label="Producto favorito"
+                            place-holder="Indique su producto favorito"
+                            v-model="favoriteProduct"
+                            :list="products"/>
               </div>
               <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                 <button type="submit"
@@ -127,10 +137,14 @@
         credit: null,
         birthDate: null,
         gender: null,
+        state: null,
+        favoriteProduct: null,
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
-        genders: ['M', 'F'],
+        states: [],
+        products: [],
+        genders: [],
         isLoading: false,
         isSubmitting: false
       }
@@ -249,6 +263,10 @@
     methods: {
       loadData: function () {
         this.getGenders()
+        return this.getStates()
+          .then(() => {
+            return this.getProducts()
+          })
       },
       submitForm: function (e) {
         if (!this.validForm()) {
@@ -264,7 +282,9 @@
           twitterId: this.twitterId,
           credit: this.credit,
           birthdate: this.birthDate,
-          gender: this.gender
+          gender: this.gender,
+          state: this.state,
+          favoriteProduct: this.favoriteProduct
         }
         /*
         if (this.lastNameIsSet) {
@@ -308,7 +328,28 @@
         ]
       },
       getStates: function () {
-
+        return this.$store.dispatch('states_get')
+          .then((states) => {
+            for (const state of states) {
+              this.states.push({
+                value: state.id,
+                text: state.nombre
+              })
+            }
+          })
+      },
+      getProducts: function () {
+        return this.$store.dispatch('products_get')
+          .then((products) => {
+            for (const product of products) {
+              this.products.push(
+                {
+                  value: product.id,
+                  text: product.name
+                }
+              )
+            }
+          })
       }
     },
     created: function () {

@@ -43,6 +43,7 @@ const actions = {
       api
         .get(url)
         .then((response) => {
+          console.log(response)
           const data = response.data || {}
           const productsData = data.msg || {}
           let products = []
