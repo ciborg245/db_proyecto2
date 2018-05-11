@@ -37,7 +37,7 @@
                          icon="phone"
                          label="Teléfono"
                          place-holder="Número telefónico"
-                         v-model="email"
+                         v-model="phone"
                          :max-length="255"
                          :is-required="true"
                          :is-success="emailIsSuccess"
@@ -47,7 +47,7 @@
                           icon="map-marker"
                           label="Dirección"
                           place-holder="Ingrese la dirección del cliente"
-                          v-model="email"
+                          v-model="address"
                           :max-length="255"
                           :is-required="true"
                           :is-success="emailIsSuccess"
@@ -57,7 +57,7 @@
                            icon="picture-o"
                            label="Imagen"
                            place-holder="Ingrese el url de la foto del usuario"
-                           v-model="firstName"
+                           v-model="image"
                            :is-required="true"
                            :is-success="firstNameIsSuccess"
                            :is-danger="firstNameIsDanger"
@@ -66,13 +66,13 @@
                            icon="twitter"
                            label="Twitter"
                            place-holder="Ingrese su cuenta de twitter"
-                           v-model="email"
+                           v-model="twitterId"
                            :max-length="255"
                            :is-required="true"
                            :is-success="emailIsSuccess"
                            :is-danger="emailIsDanger"
                            :error-msg="emailErrorMsg"/>
-                <FormInput type="number"
+                <FormInput type="text"
                            icon="money"
                            label="Límite de crédito"
                            v-model="credit"
@@ -89,6 +89,18 @@
                             place-holder="Indique su Sexo"
                             v-model="gender"
                             :list="genders"/>
+                <FormSelectWithSearch icon="building"
+                            label="Departamento"
+                            place-holder="Indique el departamento del cliente"
+                            v-model="state"
+                            :list="states"/>
+
+                <FormSelectWithSearch icon="birthday-cake"
+                            label="Producto favorito"
+                            place-holder="Indique su producto favorito"
+                            v-model="favoriteProduct"
+                            :list="products"/>
+
               </div>
               <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                 <button type="submit"
@@ -109,6 +121,7 @@
 
 <script>
   import Validator from 'validator'
+  // import Moment from 'moment'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
   import DateChooser from '@/components/common/DateChooser'
@@ -123,17 +136,22 @@
     },
     data () {
       return {
+        clientId: null,
         firstName: null,
-        lastName: null,
+        address: null,
         email: null,
         birthDate: null,
         credit: null,
-        password: null,
-        passwordValidate: null,
+        phone: null,
+        image: null,
+        twitterId: null,
         firstNameErrorMsg: null,
         emailErrorMsg: null,
-        passwordValidateErrMsg: null,
+        state: null,
+        favoriteProduct: null,
         gender: null,
+        states: [],
+        products: [],
         genders: ['M', 'F'],
         isLoading: false,
         isSubmitting: false
@@ -225,6 +243,13 @@
     methods: {
       loadData: function () {
         this.getGenders()
+        return this.getStates()
+          .then(() => {
+            return this.getProducts()
+          })
+          .then(() => {
+            return this.getClient()
+          })
       },
       submitForm: function (e) {
         if (!this.validForm()) {
@@ -232,19 +257,25 @@
           return
         }
         const data = {
-          firstName: this.firstName,
+          clientId: this.clientId,
+          name: this.firstName,
           email: this.email,
-          password: this.password
-        }
-        if (this.lastNameIsSet) {
-          data.lastName = this.lastName
+          phone: this.phone,
+          address: this.address,
+          image: this.image,
+          twitterId: this.twitterId,
+          credit: this.credit,
+          birthdate: this.birthDate,
+          gender: this.gender,
+          state: this.state,
+          favoriteProduct: this.favoriteProduct
         }
 
         return this
-          .$store.dispatch('register', data)
+          .$store.dispatch('client_edit', data)
           .then((response) => {
             console.log(response)
-            this.$router.push({name: 'Dashboard'})
+            this.$router.push({name: 'dashboard'})
           })
           .catch(err => {
             throw err
@@ -264,10 +295,60 @@
             text: 'Femenino'
           }
         ]
+      },
+      getClient: function () {
+        const query = this.$route.query
+        this.clientId = query['client'] ? query['client'] : null
+        const data = {
+          clientId: this.clientId
+        }
+        return this.$store.dispatch('client_getOne', data)
+          .then((client) => {
+            this.firstName = client.firstName
+            this.twitterId = client.twitterId
+            this.email = client.email
+            this.gender = client.gender
+            this.image = client.image
+            this.address = client.address
+            this.phone = client.phone + ''
+            this.birthDate = client.birthdate
+            this.credit = client.credit + ''
+            this.favoriteProduct = client.favoriteProduct
+            this.state = client.state || ''
+          })
+      },
+      getStates: function () {
+        return this.$store.dispatch('states_get')
+          .then((states) => {
+            console.log(states)
+            for (const state of states) {
+              this.states.push({
+                id: state.id,
+                text: state.nombre
+              })
+            }
+          })
+      },
+      getProducts: function () {
+        return this.$store.dispatch('products_get')
+          .then((products) => {
+            for (const product of products) {
+              this.products.push(
+                {
+                  id: product.id,
+                  text: product.name
+                }
+              )
+            }
+          })
       }
     },
     created: function () {
+      this.isLoading = true
       return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

@@ -83,7 +83,7 @@ const actions = {
 
     let url = apiRoot + config.apiClientId
     url = url.replace('{clientId}', clientId)
-
+    url = url + '/edit'
     const name = data.name || ''
     const gender = data.gender || ''
     const birthdate = data.birthdate || ''
