@@ -8,7 +8,7 @@ import Stores from '@/components/Stores'
 import States from '@/components/States'
 import Client from '@/components/Client'
 import Twitter from '@/components/Twitter'
-import ClientEdit from '@/components/ClientEdit'
+import ClientNewEdit from '@/components/ClientNewEdit'
 import StateNewEdit from '@/components/StateNewEdit'
 import StoreNewEdit from '@/components/StoreNewEdit'
 import ProductNewEdit from '@/components/ProductNewEdit'
@@ -45,8 +45,8 @@ export default new Router(
       },
       {
         path: '/clientEdit',
-        name: 'ClientEdit',
-        component: ClientEdit
+        name: 'ClientNewEdit',
+        component: ClientNewEdit
       },
       {
         path: '/products',

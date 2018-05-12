@@ -49,7 +49,7 @@
                     </a>
 
                     <router-link class="button is-warning"
-                                 :to="{name: 'ClientEdit', query: { 'client': client.id}}">
+                                 :to="{name: 'ClientNewEdit', query: { 'clientId': client.id}}">
                                       <span class="icon">
                                           <i class="fa fa-pencil-square-o"></i>
                                       </span>

@@ -100,7 +100,17 @@
                             :is-required="true"
                             v-model="favoriteProduct"
                             :list="products"/>
-
+                <div v-for="extra in extras" class="box">
+                  <FormInput type="text" v-model="extraFields[extra-1]" label="Campo"/>
+                  <FormInput type="text" v-model="extraValues[extra-1]" label="Valor"/>
+                </div>
+                <div class="notification is-danger" v-show="showExtraFieldError">
+                  El campo extra anterior no fue llenado correctamente
+                </div>
+                <p>{{extraFields}}</p>
+                <p>{{extraValues}}</p>
+                <a class="button is-primary" v-on:click="addField">Agregar campo</a>
+                <a class="button is-danger" @click="removeField">Borrar último campo</a>
               </div>
               <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                 <button type="submit"
@@ -121,7 +131,7 @@
 
 <script>
   import Validator from 'validator'
-  // import Moment from 'moment'
+  import Moment from 'moment'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
   import DateChooser from '@/components/common/DateChooser'
@@ -136,7 +146,6 @@
     },
     data () {
       return {
-        clientId: null,
         firstName: null,
         email: null,
         phone: null,
@@ -158,8 +167,10 @@
         products: [],
         genders: [],
         extraFields: [],
+        extraFieldsIds: [],
         extraValues: [],
         extras: 0,
+        extrasUpdateIndex: 0,
         isLoading: false,
         isSubmitting: false
       }
@@ -262,7 +273,7 @@
         return this.credit !== null
       },
       creditIsValid: function () {
-        if (!this.creditIsSet || this.credit.trim().length <= 0 || !Validator.isNumeric(this.credit)) {
+        if (!this.creditIsSet || !Validator.isDecimal(this.credit + '')) {
           return false
         }
         return true
@@ -288,6 +299,33 @@
     },
 
     methods: {
+      addField: function () {
+        this.showExtraFieldError = false
+        if (this.extraFields.length !== this.extraValues.length) {
+          this.showExtraFieldError = true
+          return
+        }
+        this.extras++
+      },
+      removeField: function () {
+        if (this.extraFields.length + this.extraValues.length === 0) {
+          if (this.extras > 0) this.extras--
+          return
+        }
+        if (this.extraFields.length === this.extraValues.length && this.extras > this.extraFields.length) {
+          this.extras--
+          return
+        }
+        if (this.extraFields.length > this.extraValues.length) {
+          this.extraFields.pop()
+        } else if (this.extraFields.length < this.extraValues.length) {
+          this.extraValues.pop()
+        } else {
+          this.extraFields.pop()
+          this.extraValues.pop()
+        }
+        this.extras--
+      },
       loadData: function () {
         this.getGenders()
         return this.getStates()
@@ -307,73 +345,101 @@
           return
         }
         const data = {
-          clientId: this.clientId,
           name: this.firstName,
           email: this.email,
           phone: this.phone,
           address: this.address,
-          image: this.image,
-          twitterId: this.twitterId,
           credit: this.credit,
-          birthdate: this.birthDate,
+          clientType: this.clientType,
           gender: this.gender,
           state: this.state,
           favoriteProduct: this.favoriteProduct
         }
+        if (this.birthdateIsSet) {
+          data.birthdate = this.birthDate
+        }
+        if (this.imageIsSet) {
+          data.image = this.image
+        }
+        if (this.twitterIdIsSet) {
+          data.twitterId = this.twitterId
+        }
+        if (this.extraFields.length > 0) {
+          if (this.extraFields.length !== this.extraValues.length) {
+            e.preventDefault()
+            return
+          }
+          let extras = {}
+          if (!this.isEdit) {
+            for (let i = 0; i < this.extraFields.length; i++) {
+              extras[this.extraFields[i]] = this.extraValues[i]
+            }
+          } else {
+            extras.update = {}
+            extras.new = {}
+            for (let i = 0; i < this.extrasUpdateIndex; i++) {
+              extras.update[this.extraFieldsIds[i]] = {}
+              extras.update[this.extraFieldsIds[i]].column = this.extraFields[i]
+              extras.update[this.extraFieldsIds[i]].value = this.extraValues[i]
+            }
+            for (let i = this.extrasUpdateIndex; i < this.extras; i++) {
+              extras.new[this.extraFields[i]] = this.extraValues[i]
+            }
+          }
 
+          data.extras = extras
+
+          console.log(data)
+          return
+        }
+        let dispatch
+        if (this.isEdit) {
+          dispatch = 'client_edit'
+        } else {
+          dispatch = 'client_new'
+        }
+        this.isSubmitting = true
         return this
-          .$store.dispatch('client_edit', data)
+          .$store.dispatch(dispatch, data)
           .then((response) => {
             console.log(response)
+            this.isSubmitting = false
             this.$router.push({name: 'dashboard'})
           })
           .catch(err => {
+            this.isSubmitting = false
             throw err
           })
       },
       validForm: function () {
-        return true
+        this.firstName = this.firstName || ''
+        this.email = this.email || ''
+        this.address = this.address || ''
+        this.phone = this.phone || ''
+        this.credit = this.credit || ''
+
+        return this.firstNameIsValid && this.emailIsValid && this.phoneIsValid &&
+        this.addressIsValid && this.creditIsValid && this.genderIsSet && this.favoriteProductIsSet &&
+        this.stateIsSet
       },
       getGenders: function () {
         this.genders = [
           {
-            value: 'male',
+            value: 'masculino',
             text: 'Masculino'
           },
           {
-            value: 'female',
+            value: 'femenino',
             text: 'Femenino'
           }
         ]
       },
-      getClient: function () {
-        const query = this.$route.query
-        this.clientId = query['client'] ? query['client'] : null
-        const data = {
-          clientId: this.clientId
-        }
-        return this.$store.dispatch('client_getOne', data)
-          .then((client) => {
-            this.firstName = client.firstName
-            this.twitterId = client.twitterId
-            this.email = client.email
-            this.gender = client.gender
-            this.image = client.image
-            this.address = client.address
-            this.phone = client.phone + ''
-            this.birthDate = client.birthdate
-            this.credit = client.credit + ''
-            this.favoriteProduct = client.favoriteProduct
-            this.state = client.state || ''
-          })
-      },
       getStates: function () {
         return this.$store.dispatch('states_get')
           .then((states) => {
-            console.log(states)
             for (const state of states) {
               this.states.push({
-                id: state.id,
+                value: state.id,
                 text: state.nombre
               })
             }
@@ -385,7 +451,7 @@
             for (const product of products) {
               this.products.push(
                 {
-                  id: product.id,
+                  value: product.id,
                   text: product.name
                 }
               )
@@ -398,11 +464,50 @@
             for (const type of types) {
               this.clientTypes.push(
                 {
-                  id: type.id,
+                  value: type.id,
                   text: type.nombre
                 }
               )
             }
+          })
+      },
+      getClient: function () {
+        const query = this.$route.query
+        this.clientId = query['clientId'] ? query['clientId'] : null
+        if (!this.clientId) {
+          this.isEdit = false
+          return
+        }
+        this.isEdit = true
+        const data = {
+          clientId: this.clientId
+        }
+        return this.$store.dispatch('client_getOne', data)
+          .then((clients) => {
+            const client = clients[0]
+            this.firstName = client.firstName
+            this.email = client.email
+            this.phone = client.phone + ''
+            this.address = client.address
+            this.image = client.image
+            this.twitterId = client.twitterId
+            this.credit = client.credit
+            this.birthDate = Moment(client.birthdate).format('DD MM YYYY')
+            this.gender = client.gender + ''
+            this.state = client.state + ''
+            this.clientType = client.clientType + ''
+            this.favoriteProduct = client.favoriteProduct + ''
+            for (const client of clients) {
+              if (client.extraField) {
+                this.extraFields.push(client.extraField)
+                this.extraFieldsIds.push(client.id)
+                this.extras++
+              }
+              if (client.extraValue) {
+                this.extraValues.push(client.extraValue)
+              }
+            }
+            this.extrasUpdateIndex = this.extras
           })
       }
     },

@@ -25,6 +25,9 @@
               <p><strong>Sexo:</strong> {{ gender }} </p>
               <p><strong>Límite de crédito:</strong> {{ credit }} </p>
               <p><strong>Cumpleaños:</strong> {{ birthdate }} </p>
+              <hr v-show="extras.length > 0">
+              <p v-show="extras.length > 0"> <strong>Campos extras</strong> </p>
+              <p v-for="extra of extras"> <strong> {{extra.field}}: </strong> {{extra.value}} </p>
             </div>
           </div>
         </div>
@@ -53,8 +56,8 @@
     data () {
       return {
         photo: 'https://bulma.io/images/placeholders/128x128.png',
-        name: 'ClienteX',
-        twitterId: 'clientex',
+        name: '',
+        twitterId: '',
         email: '',
         gender: '',
         phone: '',
@@ -63,6 +66,7 @@
         address: '',
         favoriteProduct: '',
         state: '',
+        extras: [],
         isLoading: false,
         clientId: null
       }
@@ -92,7 +96,9 @@
           clientId: this.clientId
         }
         return this.$store.dispatch('client_getOne', data)
-          .then((client) => {
+          .then((clients) => {
+            console.log(clients)
+            const client = clients[0]
             this.name = client.firstName
             this.twitterId = client.twitterId
             this.email = client.email
@@ -103,6 +109,17 @@
             this.credit = client.credit
             this.favoriteProduct = client.favoriteProduct
             this.state = client.state || ''
+
+            for (const cliente of clients) {
+              if (cliente.extraField) {
+                this.extras.push(
+                  {
+                    field: cliente.extraField,
+                    value: cliente.extraValue
+                  }
+                )
+              }
+            }
           })
           .then(() => {
             return this.$store.dispatch('products_get')

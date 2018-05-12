@@ -20,6 +20,8 @@ export default class Client {
     this.favoriteProduct = null
     this.image = null
     this.clientType = ''
+    this.extraField = null
+    this.extraValue = null
 
     this.updated = null
     this.created = null
@@ -39,6 +41,9 @@ export default class Client {
     this.image = data.foto || ''
     this.favoriteProduct = data['id_producto'] || ''
     this.clientType = data['id_tipocliente'] || ''
+
+    this.extraField = data.columna || null
+    this.extraValue = data.valor || null
 
     this.updated = data.updatedAt ? moment(data.updatedAt) : null
     this.created = data.createdAt ? moment(data.createdAt) : null

@@ -136,7 +136,7 @@ clientesController.deleteExtra = function(req, res) {
 clientesController.getClientById = function (req, res) {
   let clientId = req.params.clientId;
 
-  const sql = `SELECT * FROM clientes WHERE id = ${clientId}`;
+  const sql = `SELECT * FROM clientes LEFT JOIN camposextras AS Extra ON (id_cliente = clientes.id) WHERE clientes.id = ${clientId} ` ;
 
   db.sequelize.query(sql, {model: clientes}).then((client) => {
       res.json({success: true, msg: client})

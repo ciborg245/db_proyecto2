@@ -104,6 +104,7 @@ const actions = {
     const twitterId = data.twitterId || null
     const clientType = (data.clientType * 1) || null
     const favoriteProduct = (data.favoriteProduct * 1) || null
+    const extras = data.extras || {}
 
     const params = {
       'id': clientId,
@@ -115,10 +116,11 @@ const actions = {
       'direccion': address,
       'limitecredito': credit,
       'foto': image,
-      'id_departamento': state,
+      'id_depto': state,
       'id_twitter': twitterId,
-      'id_tipocliente': clientType,
-      'id_producto': favoriteProduct
+      'tipocliente': clientType,
+      'id_producto': favoriteProduct,
+      'extras': extras
     }
 
     return new Promise((resolve, reject) => {
@@ -192,14 +194,13 @@ const actions = {
         .then((response) => {
           const data = response.data || {}
           const clientsData = data.msg || {}
-          console.log(response)
           let clients = []
           for (const clientData of clientsData) {
             const newClient = new Client()
             newClient.initWithData(clientData)
             clients.push(newClient)
           }
-          resolve(clients[0])
+          resolve(clients)
         })
         .catch(err => {
           reject(err)
