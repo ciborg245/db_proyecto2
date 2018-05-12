@@ -368,10 +368,9 @@
             extras[this.extraFields[i]] = this.extraValues[i]
           }
           data.extras = extras
-          /*
+
           console.log(data)
           return
-          */
         }
         this.isSubmitting = true
         return this
@@ -439,7 +438,7 @@
             for (const type of types) {
               this.clientTypes.push(
                 {
-                  id: type.id,
+                  value: type.id,
                   text: type.nombre
                 }
               )

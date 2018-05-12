@@ -134,7 +134,7 @@ clientesController.getClientById = function (req, res) {
 
   const sql = `SELECT * FROM clientes WHERE id = ${clientId}`;
 
-  db.sequelize.query(sql, model{model: clientes}).then((client) => {
+  db.sequelize.query(sql, {model: clientes}).then((client) => {
       res.json({success: true, msg: client})
     })
     .catch(err => {

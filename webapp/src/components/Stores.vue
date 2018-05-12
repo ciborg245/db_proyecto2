@@ -12,7 +12,7 @@
     <section style="margin-top: 10px">
       <div class="container">
         <div class="box" v-show="!isLoading">
-          <router-link :to="{ name: 'StoreNewEdit'}" class="button is-primary"></router-link>
+          <router-link :to="{ name: 'StoreNewEdit'}" class="button is-primary">Agregar</router-link>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
@@ -23,7 +23,7 @@
             </thead>
             <tbody>
               <tr v-for="store in stores">
-                <td> <a @click="gotoStore(store.id)">{{store.id}}</a>  </td>
+                <td> {{store.id}}  </td>
                 <td> {{store['id_depto']}} </td>
                 <td> {{store.direccion}} </td>
                 <td style="text-align: right">

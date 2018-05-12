@@ -105,7 +105,7 @@
             console.log(states)
             for (const state of states) {
               this.states.push({
-                id: state.id,
+                value: state.id,
                 text: state.nombre
               })
             }

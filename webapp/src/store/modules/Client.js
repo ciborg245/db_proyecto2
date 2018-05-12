@@ -58,7 +58,7 @@ const actions = {
       'direccion': address,
       'limitecredito': credit,
       'foto': image,
-      'id_departamento': state,
+      'id_depto': state,
       'id_twitter': twitterId,
       'id_tipocliente': clientType,
       'id_producto': favoriteProduct
