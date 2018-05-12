@@ -30,6 +30,7 @@ const actions = {
           if (data.success) {
             const states = data.msg || []
             resolve(states)
+            return
           }
           console.log(response)
         })

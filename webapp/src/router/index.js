@@ -10,7 +10,7 @@ import Client from '@/components/Client'
 import Twitter from '@/components/Twitter'
 import ClientEdit from '@/components/ClientEdit'
 import StateEdit from '@/components/StateEdit'
-import StoreEdit from '@/components/StoreEdit'
+import StoreNewEdit from '@/components/StoreNewEdit'
 import ProductNewEdit from '@/components/ProductNewEdit'
 
 Vue.use(Router)
@@ -64,9 +64,9 @@ export default new Router(
         component: Stores
       },
       {
-        path: '/editStore',
-        name: 'StoreEdit',
-        component: StoreEdit
+        path: '/store',
+        name: 'StoreNewEdit',
+        component: StoreNewEdit
       },
       {
         path: '/states',

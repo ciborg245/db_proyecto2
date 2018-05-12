@@ -23,7 +23,8 @@ router.delete('/deleteProducto', productosController.deleteProducto)
 //
 // //Rutas para Sucursales
 router.get('/stores', sucursalesController.getSucursales)
-router.put('/updateSucursal', sucursalesController.updateSucursal)
+router.get('/stores/:storeId', sucursalesController.getSucursalById)
+router.put('/stores/:storeId/edit', sucursalesController.updateSucursal)
 router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
 //
 // //Rutas para Departamentos

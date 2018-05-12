@@ -18,7 +18,7 @@ sucursalesController.updateSucursal = function(req, res) {
 
     //Después de terminar el SET, se agrega la condición de WHERE
     query = query.substring(0, query.length-2)
-        + ` WHERE id = ${req.body.id};`;
+        + ` WHERE id = ${req.params.storeId};`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
@@ -66,7 +66,25 @@ sucursalesController.getSucursales = function(req, res) {
             msg: rows
         })
     }).catch(error => res.status(404).send({success: false, msg: error}));
+}
 
+sucursalesController.getSucursalById = function (req, res) {
+  const sucursalId = req.params.storeId
+  const sql = `SELECT * FROM sucursales WHERE id = :sucursalId`
+
+  return db.sequelize
+    .query(sql, {
+      type: db.sequelize.QueryTypes.SELECT,
+      replacements: {
+        sucursalId: sucursalId
+      }
+    })
+    .then((sucursal) => {
+      res.json({success: true, msg: sucursal})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
 }
 
 

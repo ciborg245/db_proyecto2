@@ -12,6 +12,7 @@ export default class Client {
     this.firstName = ''
     this.gender = ''
     this.birthdate = null
+    this.state = null
     this.twitterId = ''
     this.address = ''
     this.phone = ''
@@ -32,6 +33,7 @@ export default class Client {
     this.birthdate = data.fechanacimiento || ''
     this.twitterId = data['id_twitter'] || ''
     this.address = data.direccion || ''
+    this.state = data['id_depto'] || ''
     this.phone = data.telefono || ''
     this.credit = data.limitecredito || 0
     this.image = data.foto || ''

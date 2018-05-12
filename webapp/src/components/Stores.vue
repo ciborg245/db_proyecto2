@@ -12,6 +12,7 @@
     <section style="margin-top: 10px">
       <div class="container">
         <div class="box" v-show="!isLoading">
+          <router-link :to="{ name: 'StoreNewEdit'}" class="button is-primary"></router-link>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
@@ -34,7 +35,7 @@
                     </a>
 
                     <router-link class="button is-warning"
-                                 :to="{name: 'ClientEdit', query: { 'store': store.id}}">
+                                 :to="{name: 'StoreNewEdit', query: { 'storeId': store.id}}">
                                       <span class="icon">
                                           <i class="fa fa-pencil-square-o"></i>
                                       </span>
