@@ -40,9 +40,8 @@
                          v-model="phone"
                          :max-length="255"
                          :is-required="true"
-                         :is-success="emailIsSuccess"
-                         :is-danger="emailIsDanger"
-                         :error-msg="emailErrorMsg"/>
+                         :is-success="phoneIsSuccess"
+                         :is-danger="phoneIsDanger"/>
                 <FormInput type="text"
                           icon="map-marker"
                           label="Dirección"
@@ -50,54 +49,55 @@
                           v-model="address"
                           :max-length="255"
                           :is-required="true"
-                          :is-success="emailIsSuccess"
-                          :is-danger="emailIsDanger"
-                          :error-msg="emailErrorMsg"/>
+                          :is-success="addressIsSuccess"
+                          :is-danger="addressIsDanger"/>
                 <FormInput type="text"
                            icon="picture-o"
                            label="Imagen"
                            place-holder="Ingrese el url de la foto del usuario"
                            v-model="image"
-                           :is-required="true"
-                           :is-success="firstNameIsSuccess"
-                           :is-danger="firstNameIsDanger"
-                           :error-msg="firstNameErrorMsg"/>
+                           :is-success="imageIsSuccess"
+                           :is-danger="imageIsDanger"/>
                 <FormInput type="text"
                            icon="twitter"
                            label="Twitter"
                            place-holder="Ingrese su cuenta de twitter"
                            v-model="twitterId"
                            :max-length="255"
-                           :is-required="true"
-                           :is-success="emailIsSuccess"
-                           :is-danger="emailIsDanger"
-                           :error-msg="emailErrorMsg"/>
-                <FormInput type="text"
+                           :is-success="twitterIdIsSuccess"
+                           :is-danger="twitterIdIsDanger"/>
+                <FormInput type="number"
                            icon="money"
                            label="Límite de crédito"
                            v-model="credit"
                           :max-length="255"
                            :is-required="true"
-                           :is-success="emailIsSuccess"
-                           :is-danger="emailIsDanger"
-                           :error-msg="emailErrorMsg"/>
+                           :is-success="creditIsSuccess"
+                           :is-danger="creditIsDanger"/>
                 <DateChooser label="Fecha de nacimiento"
                               v-model="birthDate"
                               icon="calendar"/>
+                <FormSelectWithSearch label="Tipo de cliente"
+                              v-model="clientType"
+                              :is-required="true"
+                              icon="user"
+                              :list="clientTypes"/>
                 <FormSelectWithSearch icon="venus-mars"
                             label="Sexo"
                             place-holder="Indique su Sexo"
+                            :is-required="true"
                             v-model="gender"
                             :list="genders"/>
                 <FormSelectWithSearch icon="building"
                             label="Departamento"
                             place-holder="Indique el departamento del cliente"
+                            :is-required="true"
                             v-model="state"
                             :list="states"/>
-
                 <FormSelectWithSearch icon="birthday-cake"
                             label="Producto favorito"
                             place-holder="Indique su producto favorito"
+                            :is-required="true"
                             v-model="favoriteProduct"
                             :list="products"/>
 
@@ -182,23 +182,11 @@
       firstNameIsDanger: function () {
         return (this.firstNameIsSet && !this.firstNameIsValid)
       },
-      lastNameIsSet: function () {
-        return (this.lastName !== null)
-      },
-      lastNameIsValid: function () {
-        if (!this.lastNameIsSet || this.lastName.trim().length <= 0) {
-          return false
-        }
-        return true
-      },
-      lastNameIsSuccess: function () {
-        return (this.lastNameIsSet && this.lastNameIsValid)
-      },
       emailIsSet: function () {
         return (this.email !== null)
       },
       emailIsValid: function () {
-        if (!this.emailIsSet || !Validator.isEmail(this.email)) {
+        if (!this.emailIsSet || !Validator.isEmail(this.email) || this.email.trim().length <= 0) {
           this.emailErrorMsg = 'Debe ingresar un correo válido'
           return false
         }
@@ -210,40 +198,92 @@
       emailIsDanger: function () {
         return (this.emailIsSet && !this.emailIsValid)
       },
-      passwordIsSet: function () {
-        return (this.password !== null)
+      phoneIsSet: function () {
+        return this.phone !== null
       },
-      passwordIsValid: function () {
-        if (!this.passwordIsSet || this.password.trim().length <= 0) {
+      phoneIsValid: function () {
+        if (!this.phoneIsSet || !Validator.isNumeric(this.phone) || this.phone.trim().length <= 0) {
           return false
         }
         return true
       },
-      passwordIsSuccess: function () {
-        return (this.passwordIsSet && this.passwordIsValid)
+      phoneIsSuccess: function () {
+        return this.phoneIsSet && this.phoneIsValid
       },
-      passwordIsDanger: function () {
-        return (this.passwordIsSet && !this.passwordIsValid)
+      phoneIsDanger: function () {
+        return this.phoneIsSet && !this.phoneIsValid
       },
-      passwordValidateIsSet: function () {
-        return (this.passwordValidate !== null)
+      addressIsSet: function () {
+        return this.address !== null
       },
-      passwordValidateIsValid: function () {
-        if (!this.passwordValidateIsSet || this.passwordValidate.trim().length <= 0) {
-          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
-          return false
-        }
-        if (this.password !== this.passwordValidate) {
-          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
+      addressIsValid: function () {
+        if (!this.addressIsSet || this.address.trim().length <= 0) {
           return false
         }
         return true
       },
-      passwordValidateIsSuccess: function () {
-        return (this.passwordValidateIsSet && this.passwordValidateIsValid)
+      addressIsSuccess: function () {
+        return this.addressIsSet && this.addressIsValid
       },
-      passwordValidateIsDanger: function () {
-        return (this.passwordValidateIsSet && !this.passwordValidateIsValid)
+      addressIsDanger: function () {
+        return this.addressIsSet && !this.addressIsValid
+      },
+      imageIsSet: function () {
+        return this.image !== null
+      },
+      imageIsValid: function () {
+        if (!this.imageIsSet || this.image.trim().length <= 0) {
+          return false
+        }
+        return true
+      },
+      imageIsSuccess: function () {
+        return this.imageIsSet && this.imageIsValid
+      },
+      imageIsDanger: function () {
+        return this.imageIsSet && !this.imageIsValid
+      },
+      twitterIdIsSet: function () {
+        return this.twitterId !== null
+      },
+      twitterIdIsValid: function () {
+        if (!this.twitterIdIsSet || this.twitterId.trim().length <= 0) {
+          return false
+        }
+        return true
+      },
+      twitterIdIsSuccess: function () {
+        return this.twitterIdIsSet && this.twitterIdIsValid
+      },
+      twitterIdIsDanger: function () {
+        return this.twitterIdIsSet && !this.twitterIdIsValid
+      },
+      creditIsSet: function () {
+        return this.credit !== null
+      },
+      creditIsValid: function () {
+        if (!this.creditIsSet || this.credit.trim().length <= 0 || !Validator.isNumeric(this.credit)) {
+          return false
+        }
+        return true
+      },
+      creditIsSuccess: function () {
+        return this.creditIsSet && this.creditIsValid
+      },
+      creditIsDanger: function () {
+        return this.creditIsSet && !this.creditIsValid
+      },
+      birthdateIsSet: function () {
+        return this.birthDate !== null
+      },
+      genderIsSet: function () {
+        return this.gender !== null
+      },
+      stateIsSet: function () {
+        return this.state !== null
+      },
+      favoriteProductIsSet: function () {
+        return this.favoriteProduct !== null
       }
     },
 
@@ -253,6 +293,9 @@
         return this.getStates()
           .then(() => {
             return this.getProducts()
+          })
+          .then(() => {
+            return this.getClientTypes()
           })
           .then(() => {
             return this.getClient()
@@ -344,6 +387,19 @@
                 {
                   id: product.id,
                   text: product.name
+                }
+              )
+            }
+          })
+      },
+      getClientTypes: function () {
+        return this.$store.dispatch('client_types')
+          .then((types) => {
+            for (const type of types) {
+              this.clientTypes.push(
+                {
+                  id: type.id,
+                  text: type.nombre
                 }
               )
             }
