@@ -121,7 +121,7 @@
 
     methods: {
       gotoNew: function () {
-        this.$router.push({name: 'NewClient'})
+        this.$router.push({name: 'ClientNewEdit'})
       },
       gotoUsers: function () {
         this.$router.push({name: 'Clients'})
