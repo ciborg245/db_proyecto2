@@ -69,10 +69,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       api.get(url)
         .then((response) => {
+          console.log(response)
           const data = response.data
           if (data.success) {
             const newProduct = new Product()
-            newProduct.initWithData(data.msg)
+            newProduct.initWithData(data.msg[0])
             resolve(newProduct)
             return
           }
@@ -82,7 +83,60 @@ const actions = {
     })
   },
   product_edit (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
 
+    const productId = data.productId || ''
+    const productName = data.productName || null
+    const price = data.price * 1 || 0
+    const category = data.category || null
+
+    let url = apiRoot + config.apiProductId
+    url = url.replace('{productId}', productId) + '/edit'
+
+    const params = {
+      'nombre': productName,
+      'precio': price,
+      'categoria': category
+    }
+
+    return new Promise((resolve, reject) => {
+      api.put(url, params)
+        .then((response) => {
+          const data = response.data
+          resolve(data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  product_new (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiProducts
+
+    const productName = data.productName || null
+    const price = data.price * 1 || 0
+    const category = data.category || null
+
+    const params = {
+      'name': productName,
+      'price': price,
+      'category': category
+    }
+
+    return new Promise((resolve, reject) => {
+      api.post(url, params)
+        .then((response) => {
+          const data = response.data
+          resolve(data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 }
 

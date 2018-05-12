@@ -16,8 +16,9 @@ router.delete('/clients/:clientId', clientesController.deleteCliente)
 router.get('/clientTypes', clientesController.getClientTypes)
 //Rutas para Productos
 router.get('/products', productosController.getProductos)
+router.get('/products/:productId', productosController.getProductById)
 router.post('/products', productosController.newProduct)
-router.put('/updateProducto', productosController.updateProducto)
+router.put('/products/:productId/edit', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
 //
 // //Rutas para Sucursales

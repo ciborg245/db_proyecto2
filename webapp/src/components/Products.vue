@@ -12,6 +12,7 @@
     <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
+          <router-link :to="{ name: 'ProductNewEdit', }" class="button is-primary"> Agregar </router-link>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
@@ -23,7 +24,8 @@
             </thead>
             <tbody>
               <tr v-for="product in products">
-                <td> <a @click="gotoProduct(product.id)">{{product.id}}</a>  </td>
+                <!-- <td> <a @click="gotoProduct(product.id)">{{product.id}}</a>  </td> -->
+                <td> {{product.id}} </td>
                 <td> {{product.name}} </td>
                 <td> {{product.price}} </td>
                 <td> {{product.category}} </td>
@@ -36,7 +38,7 @@
                     </a>
 
                     <router-link class="button is-warning"
-                                 :to="{name: 'ClientEdit', query: { 'product': product.id}}">
+                                 :to="{name: 'ProductNewEdit', query: { 'productId': product.id}}">
                                       <span class="icon">
                                           <i class="fa fa-pencil-square-o"></i>
                                       </span>
@@ -89,11 +91,8 @@
     },
 
     methods: {
-      gotoNew: function () {
-        this.$router.push({name: 'NewClient'})
-      },
       gotoProduct: function (id) {
-        this.$router.push({ name: 'Product', query: {product: id} })
+        this.$router.push({ name: 'ProductNewEdit', query: {product: id} })
       },
       cancelConfirm: function () {
         this.toDelete = null

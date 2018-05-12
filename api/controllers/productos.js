@@ -18,7 +18,7 @@ productosController.updateProducto = function(req, res) {
 
     //Después de terminar el SET, se agrega la condición de WHERE
     query = query.substring(0, query.length-2)
-        + ` WHERE id = ${req.body.id};`;
+        + ` WHERE id = ${req.params.productId};`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
@@ -51,6 +51,8 @@ productosController.getProductos = function(req, res) {
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
     if (req.query.orderby) {
         query += ` ORDER BY ${req.query.orderby} `
+    } else {
+      query += ` ORDER BY id `
     }
 
     query += ` LIMIT 25 `;
@@ -91,6 +93,26 @@ productosController.newProduct = function (req, res) {
     })
     .catch(error => {
       res.json({success: false, msg: error})
+    })
+}
+
+productosController.getProductById = function (req, res) {
+  const productId = req.params.productId
+
+  const sql = `SELECT * FROM productos WHERE id = :productId`
+
+  return db.sequelize
+    .query(sql, {
+      type: db.sequelize.QueryTypes.SELECT,
+      replacements: {
+        productId: productId
+      }
+    })
+    .then((product) => {
+      res.json({success: true, msg: product})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
     })
 }
 

@@ -104,7 +104,7 @@
         return (this.price !== null)
       },
       priceIsValid: function () {
-        if (!this.priceIsSet || !Validator.isNumeric(this.price)) {
+        if (!this.priceIsSet || !Validator.isDecimal(this.price + '')) {
           this.priceErrorMsg = 'Debe ingresar un precio válido'
           return false
         }
@@ -128,7 +128,7 @@
       },
       getProduct: function () {
         const query = this.$route.query
-        this.productId = query['product'] ? query['product'] : null
+        this.productId = query['productId'] ? query['productId'] : null
         if (!this.productId) {
           this.isEdit = false
           return
@@ -139,8 +139,9 @@
         }
         return this.$store.dispatch('product_get', data)
           .then((product) => {
+            console.log(product)
             this.productName = product.name
-            this.price = product.price
+            this.price = product.price + ''
             this.category = product.category
           })
       },
@@ -149,22 +150,28 @@
           e.preventDefault()
           return
         }
+        let dispatch = ''
+        if (this.isEdit) {
+          dispatch = 'product_edit'
+        } else {
+          dispatch = 'product_new'
+        }
         const data = {
+          productId: this.productId || '',
           productName: this.productName,
           price: this.price,
-          password: this.password
+          category: this.category
         }
-        if (this.lastNameIsSet) {
-          data.lastName = this.lastName
-        }
-
+        this.isSubmitting = true
         return this
-          .$store.dispatch('register', data)
+          .$store.dispatch(dispatch, data)
           .then((response) => {
             console.log(response)
-            this.$router.push({name: 'Dashboard'})
+            this.isSubmitting = false
+            this.$router.push({name: 'Products'})
           })
           .catch(err => {
+            this.isSubmitting = false
             throw err
           })
       },
@@ -193,9 +200,10 @@
       }
     },
     created: function () {
+      this.isLoading = true
       return this.loadData()
         .then(() => {
-          this.firstFieldFocus()
+          this.isLoading = false
         })
     }
   }
