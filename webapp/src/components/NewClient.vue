@@ -56,7 +56,6 @@
                            label="Imagen"
                            place-holder="Ingrese el url de la foto del usuario"
                            v-model="image"
-                           :is-required="true"
                            :is-success="imageIsSuccess"
                            :is-danger="imageIsDanger"/>
                 <FormInput type="text"
@@ -65,7 +64,6 @@
                            place-holder="Ingrese su cuenta de twitter"
                            v-model="twitterId"
                            :max-length="255"
-                           :is-required="true"
                            :is-success="twitterIdIsSuccess"
                            :is-danger="twitterIdIsDanger"/>
                 <FormInput type="number"
@@ -79,19 +77,27 @@
                 <DateChooser label="Fecha de nacimiento"
                               v-model="birthDate"
                               icon="calendar"/>
+                <FormSelectWithSearch label="Tipo de cliente"
+                              v-model="clientType"
+                              :is-required="true"
+                              icon="user"
+                              :list="clientTypes"/>
                 <FormSelectWithSearch icon="venus-mars"
                             label="Sexo"
                             place-holder="Indique su Sexo"
+                            :is-required="true"
                             v-model="gender"
                             :list="genders"/>
                 <FormSelectWithSearch icon="building"
                             label="Departamento"
                             place-holder="Indique el departamento del cliente"
+                            :is-required="true"
                             v-model="state"
                             :list="states"/>
                 <FormSelectWithSearch icon="birthday-cake"
                             label="Producto favorito"
                             place-holder="Indique su producto favorito"
+                            :is-required="true"
                             v-model="favoriteProduct"
                             :list="products"/>
                 <div v-for="extra in extras" class="box">
@@ -149,11 +155,13 @@
         birthDate: null,
         gender: null,
         state: null,
+        clientType: null,
         favoriteProduct: null,
         firstNameErrorMsg: null,
         emailErrorMsg: null,
         passwordValidateErrMsg: null,
         showExtraFieldError: false,
+        clientTypes: [],
         states: [],
         products: [],
         genders: [],
@@ -272,6 +280,18 @@
       },
       creditIsDanger: function () {
         return this.creditIsSet && !this.creditIsValid
+      },
+      birthdateIsSet: function () {
+        return this.birthDate !== null
+      },
+      genderIsSet: function () {
+        return this.gender !== null
+      },
+      stateIsSet: function () {
+        return this.state !== null
+      },
+      favoriteProductIsSet: function () {
+        return this.favoriteProduct !== null
       }
     },
 
@@ -309,6 +329,9 @@
           .then(() => {
             return this.getProducts()
           })
+          .then(() => {
+            return this.getClientTypes()
+          })
       },
       submitForm: function (e) {
         if (!this.validForm()) {
@@ -320,13 +343,20 @@
           email: this.email,
           phone: this.phone,
           address: this.address,
-          image: this.image,
-          twitterId: this.twitterId,
           credit: this.credit,
-          birthdate: this.birthDate,
+          clientType: this.clientType,
           gender: this.gender,
           state: this.state,
           favoriteProduct: this.favoriteProduct
+        }
+        if (this.birthdateIsSet) {
+          data.birthdate = this.birthDate
+        }
+        if (this.imageIsSet) {
+          data.image = this.image
+        }
+        if (this.twitterIdIsSet) {
+          data.twitterId = this.twitterId
         }
         if (this.extraFields.length > 0) {
           if (this.extraFields.length !== this.extraValues.length) {
@@ -343,11 +373,6 @@
           return
           */
         }
-        /*
-        if (this.lastNameIsSet) {
-          data.lastName = this.lastName
-        }
-        */
         this.isSubmitting = true
         return this
           .$store.dispatch('client_new', data)
@@ -366,20 +391,20 @@
         this.email = this.email || ''
         this.address = this.address || ''
         this.phone = this.phone || ''
-        this.image = this.image || ''
         this.credit = this.credit || ''
 
         return this.firstNameIsValid && this.emailIsValid && this.phoneIsValid &&
-        this.addressIsValid && this.imageIsValid && this.creditIsValid
+        this.addressIsValid && this.creditIsValid && this.genderIsSet && this.favoriteProductIsSet &&
+        this.stateIsSet
       },
       getGenders: function () {
         this.genders = [
           {
-            value: 'male',
+            value: 'masculino',
             text: 'Masculino'
           },
           {
-            value: 'female',
+            value: 'femenino',
             text: 'Femenino'
           }
         ]
@@ -403,6 +428,19 @@
                 {
                   value: product.id,
                   text: product.name
+                }
+              )
+            }
+          })
+      },
+      getClientTypes: function () {
+        return this.$store.dispatch('client_types')
+          .then((types) => {
+            for (const type of types) {
+              this.clientTypes.push(
+                {
+                  id: type.id,
+                  text: type.nombre
                 }
               )
             }

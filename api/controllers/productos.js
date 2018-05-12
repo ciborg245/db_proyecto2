@@ -66,7 +66,32 @@ productosController.getProductos = function(req, res) {
             msg: rows
         })
     }).catch(error => res.status(404).send({success: false, msg: error}));
+}
 
+productosController.newProduct = function (req, res) {
+  const productName = req.body.name
+  const price = req.body.price * 1
+  const category = req.body.category
+
+  const sql = `INSERT INTO productos VALUES (DEFAULT, :productName, :price, :category, :created, :updated)`
+
+  return db.sequelize
+    .query(sql, {
+      type: db.sequelize.QueryTypes.INSERT,
+      replacements:  {
+        productName: productName,
+        price: price,
+        category: category,
+        created: new Date(),
+        updated: new Date()
+      }
+    })
+    .then((product) => {
+      res.json({success: true, msg: product})
+    })
+    .catch(error => {
+      res.json({success: false, msg: error})
+    })
 }
 
 

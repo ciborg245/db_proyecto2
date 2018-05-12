@@ -59,6 +59,28 @@ const actions = {
         })
     })
   },
+  product_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+    const productId = data.productId || ''
+    let url = apiRoot + config.apiProductId
+    url = url.replace('{productId}', productId)
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data
+          if (data.success) {
+            const newProduct = new Product()
+            newProduct.initWithData(data.msg)
+            resolve(newProduct)
+            return
+          }
+          console.log(data.msg)
+        })
+        .catch(err => reject(err))
+    })
+  },
   product_edit (context, data = {}) {
 
   }

@@ -105,4 +105,17 @@ clientesController.getClientById = function (req, res) {
     })
 }
 
+clientesController.getClientTypes = function (req, res) {
+  const sql = 'SELECT * FROM tipoclientes;'
+
+  return db.sequelize
+    .query(sql, {type: db.sequelize.QueryTypes.SELECT})
+    .then((types) => {
+      res.json({success: true, msg: types})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
+}
+
 module.exports = clientesController;

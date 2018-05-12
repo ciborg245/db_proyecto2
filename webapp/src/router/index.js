@@ -11,7 +11,7 @@ import Twitter from '@/components/Twitter'
 import ClientEdit from '@/components/ClientEdit'
 import StateEdit from '@/components/StateEdit'
 import StoreEdit from '@/components/StoreEdit'
-import ProductEdit from '@/components/ProductEdit'
+import ProductNewEdit from '@/components/ProductNewEdit'
 
 Vue.use(Router)
 
@@ -54,9 +54,9 @@ export default new Router(
         component: Products
       },
       {
-        path: '/editProduct',
-        name: 'ProductEdit',
-        component: ProductEdit
+        path: '/product',
+        name: 'ProductNewEdit',
+        component: ProductNewEdit
       },
       {
         path: '/stores',

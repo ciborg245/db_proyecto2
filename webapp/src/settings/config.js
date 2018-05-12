@@ -14,6 +14,7 @@ const config = {
   apiClients: '/clients',
   apiClientId: '/clients/{clientId}',
   apiProducts: '/products',
+  apiProductId: '/products/{productId}',
   apiStates: '/states',
   apiStores: '/stores'
 }

@@ -41,10 +41,13 @@ const actions = {
     const phone = data.phone || ''
     const address = data.address || ''
     const credit = (data.credit * 1) || ''
-    const image = data.image || ''
-    const twitterId = data.twitterId || ''
-    const clientType = data.clientType || 1
-    const favoriteProduct = data.favoriteProduct || null
+    const state = (data.state * 1) || null
+    const image = data.image || null
+    const twitterId = data.twitterId || null
+    const clientType = (data.clientType * 1) || null
+    const favoriteProduct = (data.favoriteProduct * 1) || null
+
+    const extraFields = data.extras || null
 
     const params = {
       'nombre': name,
@@ -55,9 +58,14 @@ const actions = {
       'direccion': address,
       'limitecredito': credit,
       'foto': image,
+      'id_departamento': state,
       'id_twitter': twitterId,
       'id_tipocliente': clientType,
       'id_producto': favoriteProduct
+    }
+
+    if (extraFields) {
+      params['extras'] = extraFields
     }
 
     let url = apiRoot + config.apiClients
@@ -91,10 +99,11 @@ const actions = {
     const phone = data.phone || ''
     const address = data.address || ''
     const credit = (data.credit * 1) || ''
-    const image = data.image || ''
-    const twitterId = data.twitterId || ''
-    const clientType = data.clientType || 1
-    const favoriteProduct = data.favoriteProduct || 2
+    const state = (data.state * 1) || null
+    const image = data.image || null
+    const twitterId = data.twitterId || null
+    const clientType = (data.clientType * 1) || null
+    const favoriteProduct = (data.favoriteProduct * 1) || null
 
     const params = {
       'id': clientId,
@@ -106,6 +115,7 @@ const actions = {
       'direccion': address,
       'limitecredito': credit,
       'foto': image,
+      'id_departamento': state,
       'id_twitter': twitterId,
       'id_tipocliente': clientType,
       'id_producto': favoriteProduct
@@ -142,6 +152,27 @@ const actions = {
             clients.push(newClient)
           }
           resolve(clients)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  client_types (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypes'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data
+          if (data.success) {
+            resolve(data.msg)
+            return
+          }
+          console.log(data)
         })
         .catch(err => {
           reject(err)
