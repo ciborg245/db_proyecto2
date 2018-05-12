@@ -41,18 +41,22 @@ clientesController.updateCliente = function(req, res) {
     let body = req.body;
 
     //Se realiza un query de UPDATE por cada campo extra
-    for (var extra in body.extras.update) {
-        let queryEx = "UPDATE camposextras SET valor = '"
-        if (typeof body.extras.update[extra].value == "number") {
-            queryEx += `${body.extras.update[extra].value}' WHERE id = ${extra}`
-        } else {
-            queryEx += `${body.extras.update[extra].value}' WHERE id = '${extra}'`
-        }
+    if (body.hasOwnProperty('extras')) {
+        if (body.extras.hasOwnProperty('update'))
+            for (var extra in body.extras.update) {
+                let queryEx = "UPDATE camposextras SET valor = '"
+                if (typeof body.extras.update[extra].value == "number") {
+                    queryEx += `${body.extras.update[extra].value}' WHERE id = ${extra}`
+                } else {
+                    queryEx += `${body.extras.update[extra].value}' WHERE id = '${extra}'`
+                }
 
-        queryExtras += `${queryEx} ;`;
-    }
-    for (var extra in body.extras.new) {
-        queryExtras += `INSERT INTO camposextras VALUES(DEFAULT, ${req.params.clientId}, '${extra}', '${body.extras.new[extra]}', :created, :updated);`
+                queryExtras += `${queryEx} ;`;
+            }
+        if (body.extras.hasOwnProperty('new'))
+        for (var extra in body.extras.new) {
+            queryExtras += `INSERT INTO camposextras VALUES(DEFAULT, ${req.params.clientId}, '${extra}', '${body.extras.new[extra]}', :created, :updated);`
+        }
     }
 
     //Se hace el query con los datos default de cliente
