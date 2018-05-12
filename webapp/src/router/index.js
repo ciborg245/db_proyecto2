@@ -9,7 +9,7 @@ import States from '@/components/States'
 import Client from '@/components/Client'
 import Twitter from '@/components/Twitter'
 import ClientEdit from '@/components/ClientEdit'
-import StateEdit from '@/components/StateEdit'
+import StateNewEdit from '@/components/StateNewEdit'
 import StoreNewEdit from '@/components/StoreNewEdit'
 import ProductNewEdit from '@/components/ProductNewEdit'
 
@@ -74,9 +74,9 @@ export default new Router(
         component: States
       },
       {
-        path: '/editState',
-        name: 'StateEdit',
-        component: StateEdit
+        path: '/state',
+        name: 'StateNewEdit',
+        component: StateNewEdit
       }
     ]
   },
