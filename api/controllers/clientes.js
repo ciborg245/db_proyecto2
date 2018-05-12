@@ -44,12 +44,9 @@ clientesController.updateCliente = function(req, res) {
     if (body.hasOwnProperty('extras')) {
         if (body.extras.hasOwnProperty('update'))
             for (var extra in body.extras.update) {
-                let queryEx = "UPDATE camposextras SET valor = '"
-                if (typeof body.extras.update[extra].value == "number") {
-                    queryEx += `${body.extras.update[extra].value}' WHERE id = ${extra}`
-                } else {
-                    queryEx += `${body.extras.update[extra].value}' WHERE id = '${extra}'`
-                }
+                let queryEx = "UPDATE camposextras SET "
+
+                queryEx += `valor = '${body.extras.update[extra].value}', columna = '${body.extras.update[extra].column}' WHERE id = '${extra}'`
 
                 queryExtras += `${queryEx} ;`;
             }
