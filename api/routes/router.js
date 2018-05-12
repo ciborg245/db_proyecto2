@@ -13,10 +13,14 @@ router.get('/clients', clientesController.getClientes)
 router.get('/clients/:clientId', clientesController.getClientById)
 router.put('/clients/:clientId/edit', clientesController.updateCliente)
 router.delete('/clients/:clientId', clientesController.deleteCliente)
+router.delete('/extrafield/:fieldId', clientesController.deleteExtra)
+router.get('/clientTypes', clientesController.getClientTypes)
 
 //Rutas para Productos
 router.get('/products', productosController.getProductos)
-router.put('/updateProducto', productosController.updateProducto)
+router.get('/products/:productId', productosController.getProductById)
+router.post('/products', productosController.newProduct)
+router.put('/products/:productId/edit', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
 //
 // //Rutas para Sucursales
