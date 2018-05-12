@@ -103,6 +103,14 @@
                 <div v-for="extra in extras" class="box">
                   <FormInput type="text" v-model="extraFields[extra-1]" label="Campo"/>
                   <FormInput type="text" v-model="extraValues[extra-1]" label="Valor"/>
+                  <div class="field is-grouped is-grouped-centered has-addons" v-show="extra <= extrasUpdateIndex">
+                    <p class="control">
+                      <a class="button" @click="confirmDelete(extra - 1)">
+                        <span class="icon is-small"> <i class="fa fa-trash"></i> </span>
+                        <span>Eliminar campo</span>
+                      </a>
+                    </p>
+                  </div>
                 </div>
                 <div class="notification is-danger" v-show="showExtraFieldError">
                   El campo extra anterior no fue llenado correctamente
@@ -125,6 +133,10 @@
       </div>
     </div>
   </div>
+    <confirm-modal :show-confirm="showConfirm"
+                 confirm-msg="¿Realmente desea eliminar este registro?"
+                 @accept="deleteItem"
+                 @cancel="cancelConfirm"/>
     <loader :is-loading="isLoading"/>
   </section>
 </template>
@@ -136,12 +148,14 @@
   import Loader from '@/components/common/Loader'
   import DateChooser from '@/components/common/DateChooser'
   import FormSelectWithSearch from '@/components/common/FormSelectWithSearch'
+  import ConfirmModal from '@/components/common/ConfirmModal'
   export default {
     name: 'NewClient',
     components: {
       FormInput,
       DateChooser,
       FormSelectWithSearch,
+      ConfirmModal,
       Loader
     },
     data () {
@@ -171,6 +185,8 @@
         extraValues: [],
         extras: 0,
         extrasUpdateIndex: 0,
+        toDelete: null,
+        showConfirm: false,
         isLoading: false,
         isSubmitting: false
       }
@@ -325,6 +341,20 @@
           this.extraValues.pop()
         }
         this.extras--
+      },
+      confirmDelete: function (id) {
+        this.toDelete = this.extraFieldsIds[id]
+        this.showConfirm = true
+      },
+      cancelConfirm: function () {
+        this.toDelete = null
+        thius.showConfirm = false
+      },
+      deleteItem: function () {
+        const data = {
+          fieldId: this.toDelete
+        }
+        return this.$store.dispatch()
       },
       loadData: function () {
         this.getGenders()

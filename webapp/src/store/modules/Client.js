@@ -206,6 +206,9 @@ const actions = {
           reject(err)
         })
     })
+  },
+  field_delete (context, data = {}) {
+    
   }
 }
 
