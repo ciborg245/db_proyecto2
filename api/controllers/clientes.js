@@ -8,7 +8,7 @@ var clientesController = {};
 clientesController.createCliente = function(req, res) {
     let body = req.body;
     let query = "INSERT INTO clientes VALUES(DEFAULT, ";
-    query += `'${body.name}', '${body.gender}', '${body.birthdate}', '${body.email}', ${body.phone}, '${body.address}', ${body.credit}, '${body.image}', '${body.twitterId}', ${body.clientType}, ${body.favoriteProduct}, ${body.state}, :created, :updated) RETURNING *;`
+    query += `'${body.nombre}', '${body.genero}', '${body.fechanacimiento}', '${body.correo}', ${body.telefono}, '${body.direccion}', ${body.limitecredito}, '${body.foto}', '${body.id_twitter}', ${body.id_tipocliente}, ${body.id_producto}, ${body.id_depto}, :created, :updated) RETURNING *;`
 
     db.sequelize.query(query, {
         replacements: {
@@ -56,8 +56,8 @@ clientesController.updateCliente = function(req, res) {
     }
 
     //Se hace el query con los datos default de cliente
-    query += `nombre = '${body.name}', genero = '${body.gender}', fechanacimiento = '${body.birthdate}', correo = '${body.email}', telefono = ${body.phone}, direccion = '${body.address}', `;
-    query += `limitecredito = ${body.credit}, foto = '${body.image}', id_twitter = '${body.twitterId}', id_tipocliente = ${body.clientType}, id_producto = ${body.favoriteProduct}, id_depto = ${body.state} `
+    query += `nombre = '${body.nombre}', genero = '${body.genero}', fechanacimiento = '${body.fechanacimiento}', correo = '${body.correo}', telefono = ${body.telefono}, direccion = '${body.direccion}', `;
+    query += `limitecredito = ${body.limitecredito}, foto = '${body.foto}', id_twitter = '${body.id_twitter}', id_tipocliente = ${body.tipocliente}, id_producto = ${body.id_producto}, id_depto = ${body.id_depto} `
 
     //Después de terminar el SET, se agrega la condición de WHERE
     query +=`WHERE id = ${req.params.clientId};` + queryExtras;
@@ -97,13 +97,13 @@ clientesController.getClientes = function(req, res) {
 
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
     if (req.query.orderby) {
-        query += ` ORDER BY ${req.query.orderby} `
+        query += ` ORDER BY ${req.params.orderby} `
     }
 
     query += ` LIMIT 25 `;
 
     if (req.query.offset) {
-        query += ` OFFSET ${req.query.offset} `
+        query += ` OFFSET ${req.params.offset} `
     }
 
     //Se realiza el query
@@ -118,7 +118,7 @@ clientesController.getClientes = function(req, res) {
 //Funcion para eliminar un campo extra
 clientesController.deleteExtra = function(req, res) {
     //Se construye el query
-    let query = `DELETE FROM camposextras WHERE id = ${req.params.clientId}`;
+    let query = `DELETE FROM camposextras WHERE id = ${req.params.fieldId}`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
@@ -134,7 +134,7 @@ clientesController.getClientById = function (req, res) {
 
   const sql = `SELECT * FROM clientes WHERE id = ${clientId}`;
 
-  db.sequelize.query(sql).then((client) => {
+  db.sequelize.query(sql, model{model: clientes}).then((client) => {
       res.json({success: true, msg: client})
     })
     .catch(err => {
