@@ -208,7 +208,21 @@ const actions = {
     })
   },
   field_delete (context, data = {}) {
-    
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+    const fieldId = data.fieldId || ''
+    let url = apiRoot + '/extrafield/{fieldId}'
+    url = url.replace('{fieldId}', fieldId)
+
+    return new Promise((resolve, reject) => {
+      api.delete(url)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 }
 

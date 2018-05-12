@@ -115,8 +115,6 @@
                 <div class="notification is-danger" v-show="showExtraFieldError">
                   El campo extra anterior no fue llenado correctamente
                 </div>
-                <p>{{extraFields}}</p>
-                <p>{{extraValues}}</p>
                 <a class="button is-primary" v-on:click="addField">Agregar campo</a>
                 <a class="button is-danger" @click="removeField">Borrar último campo</a>
               </div>
@@ -348,15 +346,25 @@
       },
       cancelConfirm: function () {
         this.toDelete = null
-        thius.showConfirm = false
+        this.showConfirm = false
       },
       deleteItem: function () {
         const data = {
           fieldId: this.toDelete
         }
-        return this.$store.dispatch()
+        return this.$store.dispatch('field_delete', data)
+          .then(() => {
+            this.toDelete = null
+            this.showConfirm = false
+            return this.loadData()
+          })
       },
       loadData: function () {
+        this.extraFields = []
+        this.extraValues = []
+        this.extraFieldsIds = []
+        this.extras = 0
+        this.extrasUpdateIndex = 0
         this.getGenders()
         return this.getStates()
           .then(() => {
@@ -435,7 +443,7 @@
           .then((response) => {
             console.log(response)
             this.isSubmitting = false
-            this.$router.push({name: 'dashboard'})
+            this.$router.push({name: 'Clients'})
           })
           .catch(err => {
             this.isSubmitting = false
