@@ -105,7 +105,7 @@ statisticsController.clientsByDate = function(req, res) {
         interval = 365
     }
     let query = `SELECT interv, count(id)
-        FROM (SELECT TRUNC((CURRENT_DATE - clientes."createdAt"::date) / ${interval}) as "interv", id
+        FROM (SELECT TRUNC((CURRENT_DATE - "createdAt"::date) / ${interval}) as "interv", id
         FROM clientes_view) b1
         GROUP BY interv
         ORDER BY interv`;
