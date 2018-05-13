@@ -22,16 +22,22 @@ router.get('/products/:productId', productosController.getProductById)
 router.post('/products', productosController.newProduct)
 router.put('/products/:productId/edit', productosController.updateProducto)
 router.delete('/deleteProducto', productosController.deleteProducto)
-//
+
 // //Rutas para Sucursales
 router.get('/stores', sucursalesController.getSucursales)
 router.get('/stores/:storeId', sucursalesController.getSucursalById)
 router.put('/stores/:storeId/edit', sucursalesController.updateSucursal)
 router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
-//
-// //Rutas para Departamentos
+
+//Rutas para Departamentos
 router.get('/states', departamentosController.getDepartamentos)
 router.put('/updateDepartamento', departamentosController.updateDepartamento)
 router.delete('/deleteDepartamento', departamentosController.deleteDepartamento)
+
+//Rutas para las estadisticas
+router.get('/favoriteProduct/:gender/:min/:max', statisticsController.favoriteProduct)
+router.get('/favoriteCategory/:gender/:min/:max', statisticsController.favoriteCategory)
+router.get('/popularState/:gender/:min/:max/:cmin/:cmax', statisticsController.popularState)
+router.get('/frequentClientTypes/:gender/:min/:max/:cmin/:cmax', statisticsController.frequentClientTypes)
 
 module.exports = router;
