@@ -22,13 +22,13 @@ router.get('/products', productosController.getProductos)
 router.get('/products/:productId', productosController.getProductById)
 router.post('/products', productosController.newProduct)
 router.put('/products/:productId/edit', productosController.updateProducto)
-router.delete('/deleteProducto', productosController.deleteProducto)
+router.delete('/products/:productId', productosController.deleteProducto)
 
 // //Rutas para Sucursales
 router.get('/stores', sucursalesController.getSucursales)
 router.get('/stores/:storeId', sucursalesController.getSucursalById)
 router.put('/stores/:storeId/edit', sucursalesController.updateSucursal)
-router.delete('/deleteSucursal', sucursalesController.deleteSucursal)
+router.delete('/stores/:storeId', sucursalesController.deleteSucursal)
 
 //Rutas para Departamentos
 router.get('/states', departamentosController.getDepartamentos)

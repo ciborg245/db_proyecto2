@@ -107,7 +107,7 @@
         this.showConfirm = false
         return this
           .$store.dispatch('store_delete', {
-            userId: id
+            storeId: this.toDelete
           })
           .then(() => {
             this.toDelete = null

@@ -32,7 +32,7 @@ sucursalesController.updateSucursal = function(req, res) {
 //Función para borrar un registro de Sucursales
 sucursalesController.deleteSucursal = function(req, res) {
     //Se construye el query
-    let query = `DELETE FROM sucursales WHERE id = ${req.body.id}`;
+    let query = `DELETE FROM sucursales WHERE id = ${req.params.storeId}`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {

@@ -113,10 +113,12 @@
         this.showConfirm = false
         return this
           .$store.dispatch('product_delete', {
-            productId: id
+            productId: this.toDelete
           })
-          .then(() => {
+          .then((res) => {
+            console.log(res)
             this.toDelete = null
+            this.showConfirm = false
             return this.loadData()
           })
           .catch(err => {

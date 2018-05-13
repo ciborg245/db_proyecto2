@@ -23,7 +23,8 @@ const actions = {
       api
         .delete(url)
         .then((response) => {
-          console.log(response)
+          const data = response.data || {}
+          resolve(data)
         })
         .catch(err => {
           reject(err)

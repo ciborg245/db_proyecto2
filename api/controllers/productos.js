@@ -32,7 +32,7 @@ productosController.updateProducto = function(req, res) {
 //Función para borrar un Producto
 productosController.deleteProducto = function(req, res) {
     //Se construye el query
-    let query = `DELETE FROM productos WHERE id = ${req.body.id}`;
+    let query = `DELETE FROM productos WHERE id = ${req.params.productId}`;
 
     //Se realiza el query
     db.sequelize.query(query).spread((results, metadata) => {
