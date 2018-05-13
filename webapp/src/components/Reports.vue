@@ -46,12 +46,8 @@
           </div>
         </div>
         <div class="column is-one-fifth">
-          <div class="box caja" v-on:click="gotoProducts">
-            <p>Productos</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-birthday-cake fa-lg fa-5x"></i>
-            </span>
+          <div class="box caja" v-on:click="gotoGraph4">
+            <p>Tipos de clientes más frecuentes</p>
           </div>
         </div>
         <div class="column is-one-third">

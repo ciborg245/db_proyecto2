@@ -70,6 +70,28 @@ const actions = {
         })
         .catch(err => reject(err))
     })
+  },
+  report4_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/frequentClientTypes'
+    const gender = data.gender
+    const minAge = data.minAge
+    const maxAge = data.maxAge
+    const minCredit = data.minCredit
+    const maxCredit = data.maxCredit
+
+    url = url + '/' + gender + '/' + minAge + '/' + maxAge + '/' + minCredit + '/' + maxCredit
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
   }
 }
 
