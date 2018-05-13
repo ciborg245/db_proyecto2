@@ -92,6 +92,82 @@ const actions = {
         })
         .catch(err => reject(err))
     })
+  },
+  // resumenes
+  resumen1_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/storesByState'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  resumen2_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/creditByState'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  resumen3_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/productByState'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  resumen4_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/productByClientType'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  resumen5_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/productByGender'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
   }
 }
 

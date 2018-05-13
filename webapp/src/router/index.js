@@ -10,10 +10,17 @@ import Client from '@/components/Client'
 import Twitter from '@/components/Twitter'
 
 import Reports from '@/components/Reports'
+
 import Graph1 from '@/components/Reports/graph1'
 import Graph2 from '@/components/Reports/graph2'
 import Graph3 from '@/components/Reports/graph3'
 import Graph4 from '@/components/Reports/graph4'
+
+import Resumen1 from '@/components/Reports/resumen1'
+import Resumen2 from '@/components/Reports/resumen2'
+import Resumen3 from '@/components/Reports/resumen3'
+import Resumen4 from '@/components/Reports/resumen4'
+import Resumen5 from '@/components/Reports/resumen5'
 
 import ClientNewEdit from '@/components/ClientNewEdit'
 import StateNewEdit from '@/components/StateNewEdit'
@@ -109,6 +116,31 @@ export default new Router(
         path: '/graph4',
         name: 'Graph4',
         component: Graph4
+      },
+      {
+        path: '/resumen1',
+        name: 'Resumen1',
+        component: Resumen1
+      },
+      {
+        path: '/resumen2',
+        name: 'Resumen2',
+        component: Resumen2
+      },
+      {
+        path: '/resumen3',
+        name: 'Resumen3',
+        component: Resumen3
+      },
+      {
+        path: '/resumen4',
+        name: 'Resumen4',
+        component: Resumen4
+      },
+      {
+        path: '/resumen5',
+        name: 'Resumen5',
+        component: Resumen5
       }
     ]
   },

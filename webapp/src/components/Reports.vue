@@ -3,16 +3,6 @@
     <section class="hero is-medium is-primary is-bold"  id="panito">
       <div class="hero-head" style="margin-right: 10%" >
         <div id="navbarMenuHeroB" class="navbar-menu">
-          <div class="navbar-end">
-            <span class="navbar-item">
-              <a class="button is-centered is-info is-medium" v-on:click="goToTwitter">
-                <span class="icon">
-                  <i class="fa fa-twitter"></i>
-                </span>
-                <span>Twitter</span>
-              </a>
-            </span>
-          </div>
         </div>
       </div>
       <div class="hero-body">
@@ -21,14 +11,14 @@
             Panito fresh
           </h1>
           <h2 class="subtitle sombra">
-            CRM
+            Reportes
           </h2>
 
         </div>
       </div>
     </section>
     <div class="container" style="margin-top: 20px;">
-      <h1 class="title">Gráficas</h1>
+      <h2 class="title">Gráficas</h2>
       <div class="columns is-multiline">
         <div class="column is-one-fifth">
           <div class="box caja" v-on:click="gotoGraph1">
@@ -50,23 +40,38 @@
             <p>Tipos de clientes más frecuentes</p>
           </div>
         </div>
-        <div class="column is-one-third">
+        <div class="column is-one-fifth">
           <div class="box caja" v-on:click="gotoStates">
             <p>Departamentos</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-globe fa-lg fa-5x"></i>
-            </span>
           </div>
         </div>
-        <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoStores">
-            <p>Sucursales</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-coffee fa-lg fa-5x"></i>
-            </span>
+      </div>
+      <h2 class="title">Resúmenes</h2>
+      <div class="columns is-multiline">
+        <div class="column is-one-fifth">
+          <div class="box caja" v-on:click="gotoResumen1">
+            <p>Tiendas por departamento</p>
           </div>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{name: 'Resumen2'}" class="box caja">
+            Crédito por departamento
+          </router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{name: 'Resumen3'}" class="box caja">
+            Productos favoritos por departamento
+          </router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{name: 'Resumen4'}" class="box caja">
+            Productos favoritos por tipo de cliente
+          </router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{name: 'Resumen5'}" class="box caja">
+            Producto favorito por género
+          </router-link>
         </div>
       </div>
     </div>
@@ -123,26 +128,19 @@
       gotoGraph5: function () {
         this.$router.push({name: 'Graph1'})
       },
-      gotoProducts: function () {
-        this.$router.push({name: 'Products'})
-      },
-      gotoStores: function () {
-        this.$router.push({name: 'Stores'})
-      },
-      gotoStates: function () {
-        this.$router.push({name: 'States'})
-      },
-      cancelConfirm: function () {
-        this.sqlQuery = null
-        this.showConfirm = false
-      },
-      goToTwitter: function () {
-        console.log('[ut')
-        this.$router.push({name: 'Twitter'})
+      gotoResumen1: function () {
+        this.$router.push({name: 'Resumen1'})
       },
       gotoReports: function () {
         this.$router.push({name: 'Reports'})
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.getReport()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>
