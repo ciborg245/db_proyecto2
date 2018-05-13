@@ -8,6 +8,13 @@ import Stores from '@/components/Stores'
 import States from '@/components/States'
 import Client from '@/components/Client'
 import Twitter from '@/components/Twitter'
+
+import Reports from '@/components/Reports'
+import Graph1 from '@/components/Reports/graph1'
+import Graph2 from '@/components/Reports/graph2'
+import Graph3 from '@/components/Reports/graph3'
+import Graph4 from '@/components/Reports/graph4'
+
 import ClientNewEdit from '@/components/ClientNewEdit'
 import StateNewEdit from '@/components/StateNewEdit'
 import StoreNewEdit from '@/components/StoreNewEdit'
@@ -77,6 +84,31 @@ export default new Router(
         path: '/state',
         name: 'StateNewEdit',
         component: StateNewEdit
+      },
+      {
+        path: '/reports',
+        name: 'Reports',
+        component: Reports
+      },
+      {
+        path: '/graph1',
+        name: 'Graph1',
+        component: Graph1
+      },
+      {
+        path: '/graph2',
+        name: 'Graph2',
+        component: Graph2
+      },
+      {
+        path: '/graph3',
+        name: 'Graph3',
+        component: Graph3
+      },
+      {
+        path: '/graph4',
+        name: 'Graph4',
+        component: Graph4
       }
     ]
   },

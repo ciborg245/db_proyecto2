@@ -28,35 +28,24 @@
       </div>
     </section>
     <div class="container" style="margin-top: 20px;">
+      <h1 class="title">Gráficas</h1>
       <div class="columns is-multiline">
-        <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoUsers">
-            <p>Ver clientes</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-users fa-lg fa-5x"></i>
-            </span>
+        <div class="column is-one-fifth">
+          <div class="box caja" v-on:click="gotoGraph1">
+            <p>Productos favoritos por género</p>
           </div>
         </div>
-        <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoNew">
-            <p>Agregar nuevo cliente</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-user-plus fa-lg fa-5x"></i>
-            </span>
+        <div class="column is-one-fifth">
+          <div class="box caja" v-on:click="gotoGraph2">
+            <p>Categorías de producto favoritas</p>
           </div>
         </div>
-        <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoReports">
-            <p>Reportes</p>
-            <hr>
-            <span class="icon">
-              <i class="fa fa-line-chart fa-lg fa-5x"></i>
-            </span>
+        <div class="column is-one-fifth">
+          <div class="box caja" v-on:click="gotoGraph3">
+            <p>Departamentos con más crédito</p>
           </div>
         </div>
-        <div class="column is-one-third">
+        <div class="column is-one-fifth">
           <div class="box caja" v-on:click="gotoProducts">
             <p>Productos</p>
             <hr>
@@ -123,8 +112,20 @@
       gotoNew: function () {
         this.$router.push({name: 'ClientNewEdit'})
       },
-      gotoUsers: function () {
-        this.$router.push({name: 'Clients'})
+      gotoGraph1: function () {
+        this.$router.push({name: 'Graph1'})
+      },
+      gotoGraph2: function () {
+        this.$router.push({name: 'Graph2'})
+      },
+      gotoGraph3: function () {
+        this.$router.push({name: 'Graph3'})
+      },
+      gotoGraph4: function () {
+        this.$router.push({name: 'Graph4'})
+      },
+      gotoGraph5: function () {
+        this.$router.push({name: 'Graph1'})
       },
       gotoProducts: function () {
         this.$router.push({name: 'Products'})
