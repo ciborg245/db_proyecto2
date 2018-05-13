@@ -199,6 +199,21 @@ const actions = {
         })
         .catch(err => reject(err))
     })
+  },
+  detalle2_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/newClientsByState'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
   }
 }
 

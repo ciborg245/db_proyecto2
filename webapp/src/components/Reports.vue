@@ -81,6 +81,9 @@
         <div class="column is-one-fifth">
           <router-link :to="{ name: 'Detalle1'}" class="box caja">Detalle crédito departamentos</router-link>
         </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{ name: 'Detalle2'}" class="box caja">Detalle nuevos clientes</router-link>
+        </div>
       </div>
     </div>
   </div>

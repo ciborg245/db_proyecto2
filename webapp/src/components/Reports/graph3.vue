@@ -183,7 +183,7 @@
 
         chartData.datasets.push(
           {
-            label: 'Departamentos',
+            label: 'Cantidad de clientes en ese intervalo',
             data: data,
             backgroundColor: 'cornflowerblue',
             borderColor: 'white',
