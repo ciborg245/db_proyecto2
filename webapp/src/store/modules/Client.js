@@ -182,6 +182,97 @@ const actions = {
         })
     })
   },
+  type_get (context, data = {}) {
+    const typeId = data.typeId
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypes/' + typeId
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data
+          if (data.success) {
+            resolve(data.msg[0])
+            return
+          }
+          console.log(data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  client_type_new (context, data = {}) {
+    const name = data.name || ''
+    const discount = data.discount || 0
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypes'
+
+    const params = {
+      'name': name,
+      'discount': discount
+    }
+
+    return new Promise((resolve, reject) => {
+      api.post(url, params)
+        .then((res) => {
+          const data = res.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
+  client_type_edit (context, data = {}) {
+    const typeId = data.typeId
+    const name = data.name
+    const discount = data.discount
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypes/{typeId}'
+    url = url.replace('{typeId}', typeId)
+
+    const params = {
+      'name': name,
+      'discount': discount
+    }
+
+    return new Promise((resolve, reject) => {
+      api.put(url, params)
+        .then((response) => {
+          const data = response.data || {}
+          if (data.success) {
+            resolve(data.msg)
+            return
+          }
+          reject(data)
+        })
+        .catch((err) => reject(err))
+    })
+  },
+  client_type_delete (context, data = {}) {
+    const typeId = data.typeId
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypes/' + typeId
+
+    return new Promise((resolve, reject) => {
+      api.delete(url)
+        .then((res) => {
+          const data = res.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
   client_getOne (context, data = {}) {
     const env = config.env
     const apiRoot = config[env].apiRoot

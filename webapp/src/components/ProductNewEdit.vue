@@ -123,8 +123,11 @@
 
     methods: {
       loadData: function () {
-        this.getCategories()
-        return this.getProduct()
+        return Promise.resolve()
+          .then(() => {
+            this.getCategories()
+            return this.getProduct()
+          })
       },
       getProduct: function () {
         const query = this.$route.query

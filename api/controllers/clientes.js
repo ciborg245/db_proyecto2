@@ -156,5 +156,93 @@ clientesController.getClientTypes = function (req, res) {
     })
 }
 
+clientesController.getClientType = function (req, res) {
+  const sql = 'SELECT * FROM tipoclientes WHERE id = :typeId;'
 
+  db.sequelize
+    .query(sql, {
+      type: db.sequelize.QueryTypes.SELECT,
+      replacements: {
+        typeId: req.params.typeId
+      }
+    })
+    .then((types) => {
+      res.json({success: true, msg: types})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
+}
+
+clientesController.editClientType = function (req, res) {
+  const discount = req.body.discount
+  const name = req.body.name
+  const typeId = req.params.typeId
+  const sql = 'UPDATE tipoclientes SET descuento = :descuento, nombre = :nombre WHERE id = :typeId;'
+
+  return db.sequelize
+    .query(sql,
+      {
+        type: db.sequelize.QueryTypes.UPDATE,
+        replacements: {
+          descuento: discount,
+          nombre: name,
+          typeId: typeId
+        }
+      })
+    .then((type) => {
+      res.json({success: true, msg: type})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
+}
+
+clientesController.addClientType = function (req, res) {
+  const name = req.body.name
+  const discount = req.body.discount * 1
+  const created = new Date()
+  const updated = new Date()
+
+  const sql = 'INSERT INTO tipoclientes VALUES (DEFAULT, :discount, :name, :created, :updated);'
+
+  return db.sequelize
+    .query(sql,
+      {
+        type: db.sequelize.INSERT,
+        replacements: {
+          name: name,
+          discount: discount,
+          created: created,
+          updated: updated
+        }
+      })
+    .then((clientType) => {
+      res.json({success: true, msg: clientType})
+    })
+    .catch(err => {
+      res.json({success: false, msg: err})
+    })
+}
+
+clientesController.deleteClientType = function (req, res) {
+  const typeId = req.params.typeId
+
+  const sql = `DELETE FROM tipoclientes WHERE id = :typeId;`
+
+  return db.sequelize
+    .query(sql,
+      {
+        type: db.sequelize.DELETE,
+        replacements: {
+          typeId: typeId
+        }
+      })
+      .then(() => {
+        res.json({success: true, msg: 'Tipo de cliente eliminado'})
+      })
+      .catch((err) => {
+        res.json({success: false, msg: err})
+      })
+}
 module.exports = clientesController;

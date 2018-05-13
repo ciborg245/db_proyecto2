@@ -39,13 +39,13 @@
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoNew">
-            <p>Agregar nuevo cliente</p>
+          <router-link :to="{ name: 'ClientTypes'}" class="box caja">
+            <p>Tipos de clientes</p>
             <hr>
             <span class="icon">
               <i class="fa fa-user-plus fa-lg fa-5x"></i>
             </span>
-          </div>
+          </router-link>
         </div>
         <div class="column is-one-third">
           <div class="box caja" v-on:click="gotoReports">

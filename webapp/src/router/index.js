@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Dashboard from '@/components/Dashboard'
-import NewClient from '@/components/NewClient'
+
 import Clients from '@/components/Clients'
+import ClientTypes from '@/components/ClientTypes'
+import clientTypesNewEdit from '@/components/clientTypesNewEdit'
 import Products from '@/components/Products'
 import Stores from '@/components/Stores'
 import States from '@/components/States'
@@ -40,9 +42,14 @@ export default new Router(
         component: Dashboard
       },
       {
-        path: '/new',
-        name: 'NewClient',
-        component: NewClient
+        path: '/clientTypes',
+        name: 'ClientTypes',
+        component: ClientTypes
+      },
+      {
+        path: '/types',
+        name: 'ClientTypesNewEdit',
+        component: clientTypesNewEdit
       },
       {
         path: '/clients',
