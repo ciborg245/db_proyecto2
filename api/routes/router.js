@@ -46,6 +46,7 @@ router.get('/favoriteProduct/:gender/:min/:max', statisticsController.favoritePr
 router.get('/favoriteCategory/:gender/:min/:max', statisticsController.favoriteCategory)
 router.get('/popularState/:gender/:min/:max/:cmin/:cmax', statisticsController.popularState)
 router.get('/frequentClientTypes/:gender/:min/:max/:cmin/:cmax', statisticsController.frequentClientTypes)
+router.get('/clientsByDate/:interval', statisticsController.clientsByDate)
 
 //Resumenes
 router.get('/storesByState', statisticsController.storesByState)
@@ -56,5 +57,6 @@ router.get('/productByGender', statisticsController.productByGender)
 
 //Detalle
 router.get('/statesReport', statisticsController.statesReport)
+router.get('/newClientsByState', statisticsController.newClientsByState)
 
 module.exports = router;
