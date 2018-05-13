@@ -4,6 +4,7 @@ const clientesController = require('../controllers/clientes')
 const productosController = require('../controllers/productos')
 const sucursalesController = require('../controllers/sucursales')
 const departamentosController = require('../controllers/departamentos')
+const statisticsController = require('../controllers/statistics')
 
 router.get('/', function(req, res) {res.send("welcome")});
 
