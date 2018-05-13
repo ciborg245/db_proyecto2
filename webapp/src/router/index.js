@@ -17,6 +17,7 @@ import Graph1 from '@/components/Reports/graph1'
 import Graph2 from '@/components/Reports/graph2'
 import Graph3 from '@/components/Reports/graph3'
 import Graph4 from '@/components/Reports/graph4'
+import Graph5 from '@/components/Reports/graph5'
 
 import Resumen1 from '@/components/Reports/resumen1'
 import Resumen2 from '@/components/Reports/resumen2'
@@ -125,6 +126,11 @@ export default new Router(
         path: '/graph4',
         name: 'Graph4',
         component: Graph4
+      },
+      {
+        path: '/graph5',
+        name: 'Graph5',
+        component: Graph5
       },
       {
         path: '/resumen1',

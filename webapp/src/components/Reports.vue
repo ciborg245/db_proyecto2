@@ -41,9 +41,9 @@
           </div>
         </div>
         <div class="column is-one-fifth">
-          <div class="box caja" v-on:click="gotoStates">
-            <p>Departamentos</p>
-          </div>
+          <router-link :to="{name: 'Graph5'}" class="box caja">
+            Crecimiento de clientes
+          </router-link>
         </div>
       </div>
 
@@ -144,11 +144,6 @@
       }
     },
     created: function () {
-      this.isLoading = true
-      return this.getReport()
-        .then(() => {
-          this.isLoading = false
-        })
     }
   }
 </script>
