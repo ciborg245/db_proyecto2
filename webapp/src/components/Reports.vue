@@ -46,6 +46,7 @@
           </div>
         </div>
       </div>
+
       <h2 class="title">Resúmenes</h2>
       <div class="columns is-multiline">
         <div class="column is-one-fifth">
@@ -72,6 +73,13 @@
           <router-link :to="{name: 'Resumen5'}" class="box caja">
             Producto favorito por género
           </router-link>
+        </div>
+      </div>
+
+      <h2 class="title">Reportes de detalle</h2>
+      <div class="columns is-multiline">
+        <div class="column is-one-fifth">
+          <router-link :to="{ name: 'Detalle1'}" class="box caja">Detalle crédito departamentos</router-link>
         </div>
       </div>
     </div>
