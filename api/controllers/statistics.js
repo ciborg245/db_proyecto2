@@ -92,6 +92,32 @@ statisticsController.frequentClientTypes = function(req, res) {
     }).catch(error => res.send({success: false, msg: error}))
 }
 
+//Grafica 5
+statisticsController.clientsByDate = function(req, res) {
+    let interval;
+    if (req.params.interval == "dia") {
+        interval = 1
+    } else if (req.params.interval == "semana") {
+        interval = 7
+    } else if (req.params.interval == "mes") {
+        interval = 30
+    } if (req.params.interval == "año") {
+        interval = 365
+    }
+    let query = `SELECT interv, count(id)
+        FROM (SELECT TRUNC((CURRENT_DATE - clientes."createdAt"::date) / ${interval}) as "interv", id
+        FROM clientes_view) b1
+        GROUP BY interv
+        ORDER BY interv`;
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
+
 //Resumen 1
 statisticsController.storesByState = function(req, res) {
     let query = "SELECT nombre, count(id) FROM sucursales_departamentos GROUP BY nombre";
@@ -191,5 +217,36 @@ statisticsController.statesReport = function(req, res) {
         });
     }).catch(error => res.send({success: false, msg: error}))
 }
+
+//Detalle 2
+statisticsController.newClientsByState = function(req, res) {
+    let query = `
+    SELECT b3.departamentos_nombre, b2.count as "new_clients_month", b3.count as "new_clients_year", b4.count as "total_clients"
+    FROM    (SELECT count(id), departamentos_nombre
+                FROM (SELECT departamentos_nombre, TRUNC((CURRENT_DATE - "createdAt"::date) / 30) as "interv", id
+                        FROM clientes_departamentos) a1
+                WHERE interv = 0
+                GROUP BY departamentos_nombre) b2,
+            (SELECT count(id), departamentos_nombre
+                FROM (SELECT departamentos_nombre, TRUNC((CURRENT_DATE - "createdAt"::date) / 365) as "interv", id
+                        FROM clientes_departamentos) a2
+                WHERE interv = 0
+                GROUP BY departamentos_nombre) b3,
+            (SELECT count(id), departamentos_nombre
+                FROM clientes_departamentos
+                GROUP BY departamentos_nombre) b4
+    WHERE b2.departamentos_nombre = b3.departamentos_nombre
+    AND b2.departamentos_nombre = b4.departamentos_nombre`;
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
+
+//Detalle 3
+
 
 module.exports = statisticsController;
