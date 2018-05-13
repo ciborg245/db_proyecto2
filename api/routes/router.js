@@ -36,9 +36,20 @@ router.put('/updateDepartamento', departamentosController.updateDepartamento)
 router.delete('/deleteDepartamento', departamentosController.deleteDepartamento)
 
 //Rutas para las estadisticas
+//Graficas
 router.get('/favoriteProduct/:gender/:min/:max', statisticsController.favoriteProduct)
 router.get('/favoriteCategory/:gender/:min/:max', statisticsController.favoriteCategory)
 router.get('/popularState/:gender/:min/:max/:cmin/:cmax', statisticsController.popularState)
 router.get('/frequentClientTypes/:gender/:min/:max/:cmin/:cmax', statisticsController.frequentClientTypes)
+
+//Resumenes
+router.get('/storesByState', statisticsController.storesByState)
+router.get('/creditByState', statisticsController.creditByState)
+router.get('/productByState', statisticsController.productByState)
+router.get('/productByClientType', statisticsController.productByClientType)
+router.get('/productByGender', statisticsController.productByGender)
+
+//Detalle
+router.get('/statesReport', statisticsController.statesReport)
 
 module.exports = router;
