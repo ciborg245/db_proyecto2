@@ -247,6 +247,47 @@ statisticsController.newClientsByState = function(req, res) {
 }
 
 //Detalle 3
+statisticsController.clientTypeReport = function(req, res) {
+    let query = `
+    SELECT tipo_nombre, avg(limitecredito), min(limitecredito), max(limitecredito), count(*)
+    FROM clientes_tipoclientes
+    GROUP BY tipo_nombre`
+}
 
+//Detalle 4
+statisticsController.ageReport = function(req, res) {
+    let query = `
+    SELECT (b2.interv * 10) as "age_interval", productos_nombre, b3.avg, b3.count as "clientes"
+    FROM (SELECT TRUNC(edad / 10) as "interv", productos_nombre, count(id)
+            FROM clientes_productos
+            GROUP BY interv, productos_nombre) b2,
+            (SELECT TRUNC(edad / 10) as "interv", count(id), avg(limitecredito)
+            FROM clientes_productos
+            GROUP BY interv) b3
+    WHERE b2.count >= ALL (SELECT count(b1.id)
+                            FROM (SELECT TRUNC(edad / 10) as "interv", productos_nombre, id
+                                    FROM clientes_productos) b1
+                            WHERE b1.productos_nombre = b2.productos_nombre
+                            GROUP BY b1.interv, b1.productos_nombre)
+    AND b2.interv >= 1 AND b2.interv < 6
+    AND b2.interv = b3.interv
+    UNION
+    SELECT 60 as "age_interval", productos_nombre, avg, b3.count as "clientes"
+    FROM(SELECT productos_nombre, count(id)
+            FROM clientes_productos
+            WHERE edad >= 60
+            GROUP BY productos_nombre) b1,
+            (SELECT count(id), avg(limitecredito)
+            FROM clientes_productos
+            WHERE edad >= 60) b3
+    WHERE b1.count >= ALL (SELECT count(id)
+                            FROM clientes_productos
+                            WHERE edad >= 60
+                            GROUP BY productos_nombre)
+    ORDER BY age_interval`
+}
+
+//Detalle 5
+statisticsController
 
 module.exports = statisticsController;

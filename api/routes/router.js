@@ -15,12 +15,7 @@ router.get('/clients/:clientId', clientesController.getClientById)
 router.put('/clients/:clientId/edit', clientesController.updateCliente)
 router.delete('/clients/:clientId', clientesController.deleteCliente)
 router.delete('/extrafield/:fieldId', clientesController.deleteExtra)
-
 router.get('/clientTypes', clientesController.getClientTypes)
-router.post('/clientTypes', clientesController.addClientType)
-router.get('/clientTypes/:typeId', clientesController.getClientType)
-router.put('/clientTypes/:typeId', clientesController.editClientType)
-router.delete('/clientTypes/:typeId', clientesController.deleteClientType)
 
 //Rutas para Productos
 router.get('/products', productosController.getProductos)
@@ -58,5 +53,7 @@ router.get('/productByGender', statisticsController.productByGender)
 //Detalle
 router.get('/statesReport', statisticsController.statesReport)
 router.get('/newClientsByState', statisticsController.newClientsByState)
+router.get('/clientTypeReport', statisticsController.clientTypeReport)
+router.get('/ageReport', statisticsController.ageReport)
 
 module.exports = router;
