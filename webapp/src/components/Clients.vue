@@ -19,6 +19,14 @@
           </div>
         </div>
         <div class="box">
+          <div class="field is-grouped is-grouped-centered has-addons">
+            <p class="control">
+              <router-link class="button is-info is-rounded" :to="{ name: 'ClientNewEdit' }">
+                <span class="icon is-small"> <i class="fa fa-plus"></i> </span>
+                <span>Agregar cliente</span>
+              </router-link>
+            </p>
+          </div>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>

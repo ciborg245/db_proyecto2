@@ -7,7 +7,7 @@
             <div class="media">
               <div class="media-left">
                 <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                  <img v-bind:src="photo" alt="Placeholder image">
                 </figure>
               </div>
               <div class="media-content">
@@ -15,7 +15,7 @@
                 <p class="subtitle is-6"> @{{ twitterId }} </p>
               </div>
             </div>
-
+            <hr>
             <div class="content">
               <p><strong>Correo:</strong> {{ email }} </p>
               <p><strong>Dirección:</strong> {{ address }} </p>
@@ -109,6 +109,7 @@
             this.credit = client.credit
             this.favoriteProduct = client.favoriteProduct
             this.state = client.state || ''
+            this.photo = client.image || 'https://bulma.io/images/placeholders/96x96.png'
 
             for (const cliente of clients) {
               if (cliente.extraField) {

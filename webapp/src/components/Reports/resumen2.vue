@@ -4,44 +4,25 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Sucursales Fresh
+            Crédito total por departamento
           </h1>
         </div>
       </div>
     </section>
-    <section style="margin-top: 10px">
+    <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
-        <div class="box" v-show="!isLoading">
-          <router-link :to="{ name: 'StoreNewEdit'}" class="button is-primary">Agregar</router-link>
+        <div class="box">
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Departamento</th>
-                <th>Dirección</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="store in stores">
-                <td> {{store.id}}  </td>
-                <td> {{store['id_depto']}} </td>
-                <td> {{store.direccion}} </td>
-                <td style="text-align: right">
-                  <p class="field">
-                    <a class="button is-danger" @click="confirmDelete(store.id)">
-                                      <span class="icon">
-                                          <i class="fa fa-trash-o"></i>
-                                      </span>
-                    </a>
-
-                    <router-link class="button is-warning"
-                                 :to="{name: 'StoreNewEdit', query: { 'storeId': store.id}}">
-                                      <span class="icon">
-                                          <i class="fa fa-pencil-square-o"></i>
-                                      </span>
-                    </router-link>
-                  </p>
-                </td>
+              <tr v-for="state in states">
+                <td> {{state['departamentos_nombre']}} </td>
+                <td> {{state.sum}} </td>
               </tr>
             </tbody>
           </table>
@@ -50,8 +31,8 @@
     </section>
     <loader :is-loading="isLoading"/>
     <confirm-modal :show-confirm="showConfirm"
-                   confirm-msg="¿Realmente desea eliminar esta sucursal?"
-                   @accept="deleteStore"
+                   confirm-msg="¿Realmente desea eliminar este cliente?"
+                   @accept="deleteClient"
                    @cancel="cancelConfirm"/>
   </div>
 </template>
@@ -61,7 +42,7 @@
   import Loader from '@/components/common/Loader'
   import ConfirmModal from '@/components/common/ConfirmModal'
   export default {
-    name: 'Stores',
+    name: 'dashboard',
 
     components: {
       FormCheckbox,
@@ -73,7 +54,7 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        stores: [],
+        states: [],
         notificationMessage: null,
         isLoading: false,
         showConfirm: false,
@@ -82,32 +63,26 @@
       }
     },
 
+    // Metodos de la Webapp
+    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
+    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
-      gotoNew: function () {
-        this.$router.push({name: 'NewStore'})
-      },
-      gotoStore: function (id) {
-        this.$router.push({ name: 'Store', query: {store: id} })
-      },
-      cancelConfirm: function () {
-        this.toDelete = null
-        this.showConfirm = false
-      },
       loadData: function () {
-        return this.$store.dispatch('stores_get')
-          .then((stores) => {
-            this.stores = stores
+        this.states = []
+        return this.$store.dispatch('resumen2_get')
+          .then((states) => {
+            this.states = states
           })
       },
       confirmDelete: function (id) {
         this.toDelete = id
         this.showConfirm = true
       },
-      deleteStore: function (id) {
+      deleteClient: function () {
         this.showConfirm = false
         return this
-          .$store.dispatch('store_delete', {
-            storeId: this.toDelete
+          .$store.dispatch('client_delete', {
+            clientId: this.toDelete
           })
           .then(() => {
             this.toDelete = null

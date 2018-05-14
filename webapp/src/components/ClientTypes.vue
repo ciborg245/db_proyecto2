@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Productos Fresh
+            Tipos de clientes Fresh
           </h1>
         </div>
       </div>
@@ -12,33 +12,38 @@
     <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
-          <router-link :to="{ name: 'ProductNewEdit', }" class="button is-primary"> Agregar </router-link>
+          <div class="field is-grouped is-grouped-centered has-addons">
+            <p class="control">
+              <router-link class="button is-info is-rounded" :to="{ name: 'ClientTypesNewEdit' }">
+                <span class="icon is-small"> <i class="fa fa-plus"></i> </span>
+                <span>Agregar cliente</span>
+              </router-link>
+            </p>
+          </div>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Precio</th>
-                <th>Categoría</th>
+                <th>Descuento %</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in products">
-                <!-- <td> <a @click="gotoProduct(product.id)">{{product.id}}</a>  </td> -->
-                <td> {{product.id}} </td>
-                <td> {{product.name}} </td>
-                <td> {{product.price}} </td>
-                <td> {{product.category}} </td>
+              <tr v-for="type in types">
+                <td>{{type.id}}</td>
+                <td>{{type.nombre}}</td>
+                <td>{{type.descuento}}</td>
+
                 <td style="text-align: right">
                   <p class="field">
-                    <a class="button is-danger" @click="confirmDelete(product.id)">
+                    <a class="button is-danger" @click="confirmDelete(type.id)">
                                       <span class="icon">
                                           <i class="fa fa-trash-o"></i>
                                       </span>
                     </a>
 
                     <router-link class="button is-warning"
-                                 :to="{name: 'ProductNewEdit', query: { 'productId': product.id}}">
+                                 :to="{name: 'ClientTypesNewEdit', query: { 'typeId': type.id}}">
                                       <span class="icon">
                                           <i class="fa fa-pencil-square-o"></i>
                                       </span>
@@ -53,8 +58,8 @@
     </section>
     <loader :is-loading="isLoading"/>
     <confirm-modal :show-confirm="showConfirm"
-                   confirm-msg="¿Realmente desea eliminar este producto?"
-                   @accept="deleteProduct"
+                   confirm-msg="¿Realmente desea eliminar este tipo de cliente?"
+                   @accept="deleteClient"
                    @cancel="cancelConfirm"/>
   </div>
 </template>
@@ -64,7 +69,7 @@
   import Loader from '@/components/common/Loader'
   import ConfirmModal from '@/components/common/ConfirmModal'
   export default {
-    name: 'Products',
+    name: 'dashboard',
 
     components: {
       FormCheckbox,
@@ -76,12 +81,7 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        products: [
-          {
-            id: 1,
-            name: 'Producto X',
-            price: 12.0
-          }],
+        types: [],
         notificationMessage: null,
         isLoading: false,
         showConfirm: false,
@@ -90,35 +90,36 @@
       }
     },
 
+    // Metodos de la Webapp
+    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
+    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
-      gotoProduct: function (id) {
-        this.$router.push({ name: 'ProductNewEdit', query: {product: id} })
+      gotoNew: function () {
+        this.$router.push({name: 'NewClient'})
       },
       cancelConfirm: function () {
         this.toDelete = null
         this.showConfirm = false
       },
       loadData: function () {
-        this.products
-        return this.$store.dispatch('products_get')
-          .then((products) => {
-            this.products = products
+        this.types = []
+        return this.$store.dispatch('client_types')
+          .then((types) => {
+            this.types = types
           })
       },
       confirmDelete: function (id) {
         this.toDelete = id
         this.showConfirm = true
       },
-      deleteProduct: function (id) {
+      deleteClient: function () {
         this.showConfirm = false
         return this
-          .$store.dispatch('product_delete', {
-            productId: this.toDelete
+          .$store.dispatch('client_type_delete', {
+            typeId: this.toDelete
           })
-          .then((res) => {
-            console.log(res)
+          .then(() => {
             this.toDelete = null
-            this.showConfirm = false
             return this.loadData()
           })
           .catch(err => {

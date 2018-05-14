@@ -10,20 +10,17 @@ const mutations = {}
 // async operations
 const actions = {
   store_delete (context, data = {}) {
+    const storeId = data.storeId
+
     const env = config.env
     const apiRoot = config[env].apiRoot
 
-    const query = data.sqlQuery || ''
-
-    let url = apiRoot + config.apiQuery
-
-    const params = {
-      'sql_query': query
-    }
+    let url = apiRoot + config.apiStoreId
+    url = url.replace('{storeId}', storeId)
 
     return new Promise((resolve, reject) => {
       api
-        .post(url, params)
+        .delete(url)
         .then(response => {
           resolve(response)
         })

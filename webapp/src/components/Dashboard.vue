@@ -39,16 +39,16 @@
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box caja" v-on:click="gotoNew">
-            <p>Agregar nuevo cliente</p>
+          <router-link :to="{ name: 'ClientTypes'}" class="box caja">
+            <p>Tipos de clientes</p>
             <hr>
             <span class="icon">
               <i class="fa fa-user-plus fa-lg fa-5x"></i>
             </span>
-          </div>
+          </router-link>
         </div>
         <div class="column is-one-third">
-          <div class="box caja">
+          <div class="box caja" v-on:click="gotoReports">
             <p>Reportes</p>
             <hr>
             <span class="icon">
@@ -121,7 +121,7 @@
 
     methods: {
       gotoNew: function () {
-        this.$router.push({name: 'NewClient'})
+        this.$router.push({name: 'ClientNewEdit'})
       },
       gotoUsers: function () {
         this.$router.push({name: 'Clients'})
@@ -142,6 +142,9 @@
       goToTwitter: function () {
         console.log('[ut')
         this.$router.push({name: 'Twitter'})
+      },
+      gotoReports: function () {
+        this.$router.push({name: 'Reports'})
       }
     }
   }
