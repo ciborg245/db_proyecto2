@@ -13,6 +13,19 @@
         </div>
       </div>
     </section>
+    <div class="columns search-div">
+      <div class="column is-three-quarters">
+        <div class="control is-medium has-icons-left">
+          <input class="input is-medium is-rounded" type="text" placeholder="Search">
+          <span class="icon is-medium is-left">
+              <i class="fa fa-search"></i>
+          </span>
+        </div>
+      </div>
+      <div class="column">
+        <a class="button is-info is-medium">Search</a>
+      </div>
+    </div>
     <div style="margin-top: 3%">
       <nav class="level">
         <div class="level-item has-text-centered">
@@ -98,3 +111,13 @@
     }
   }
 </script>
+
+<style type="text/css" scoped>
+  
+  .search-div {
+    margin-top: 2%;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+</style>
