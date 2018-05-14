@@ -93,12 +93,23 @@ clientesController.deleteCliente = function(req, res) {
 
 //Función para recuperar una cantidad X de registros de la base de datos
 clientesController.getClientes = function(req, res) {
+
     //Se empieza a construir el query
     let query = `SELECT * FROM clientes`;
+    if (req.query.state) {
+      query += ` WHERE id_depto = ${req.query.state}`
+      if (req.query.type) {
+        query += ` AND id_tipocliente = ${req.query.type}`
+      }
+    } else if (req.query.type) {
+      query += ` WHERE id_tipocliente = ${req.query.type}`
+    }
 
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
     if (req.query.orderby) {
-        query += ` ORDER BY ${req.params.orderby} `
+      query += ` ORDER BY ${req.query.orderby} `
+    } else {
+      query += ` ORDER BY id `
     }
 
     query += ` LIMIT 25 `;
