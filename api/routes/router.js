@@ -45,7 +45,7 @@ router.get('/clientsByDate/:interval', statisticsController.clientsByDate)
 
 //Resumenes
 router.get('/storesByState', statisticsController.storesByState)
-router.get('/creditByState', statisticsController.creditByState)
+router.get('/total', statisticsController.creditByState)
 router.get('/productByState', statisticsController.productByState)
 router.get('/productByClientType', statisticsController.productByClientType)
 router.get('/productByGender', statisticsController.productByGender)
@@ -55,5 +55,6 @@ router.get('/statesReport', statisticsController.statesReport)
 router.get('/newClientsByState', statisticsController.newClientsByState)
 router.get('/clientTypeReport', statisticsController.clientTypeReport)
 router.get('/ageReport', statisticsController.ageReport)
+router.get('/productsReport', statisticsController.productsReport)
 
 module.exports = router;
