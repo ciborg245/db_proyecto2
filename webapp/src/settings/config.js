@@ -17,7 +17,14 @@ const config = {
   apiProductId: '/products/{productId}',
   apiStates: '/states',
   apiStores: '/stores',
-  apiStoreId: '/stores/{storeId}'
+  apiStoreId: '/stores/{storeId}',
+  apiTwitterName: '/twitter/name/{screen_name}',
+  apiTwitterId: '/twitter/id/{twitterId}',
+  apiTwitterTweets: '/twitter/tweets',
+  apiTwitterSearch: '/twitter/search/{word}',
+  apiTwitterSearchId: '/twitter/search/{id}/{word}',
+  apiTwitterSearchName: '/twitter/search/name/{screen_name}/{word}',
+  apiTwitterDelete: '/twitter/{twitterId}'
 }
 
 export default config

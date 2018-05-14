@@ -14,16 +14,32 @@
       </div>
     </section>
     <div class="columns search-div">
-      <div class="column is-three-quarters">
+      <div class="column is-two-fifths">
         <div class="control is-medium has-icons-left">
-          <input class="input is-medium is-rounded" type="text" placeholder="Search">
+          <input class="input is-medium is-rounded" v-model="searchWord" type="text" placeholder="Text">
           <span class="icon is-medium is-left">
               <i class="fa fa-search"></i>
           </span>
         </div>
       </div>
+      <div class="column is-two-fifths">
+        <div class="dropdown is-active">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>{{ currentName }}</span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content" v-for="user in users">
+              <a href="#" class="dropdown-item">
+                {{ user }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="column">
-        <a class="button is-info is-medium">Search</a>
+        <a class="button is-info is-medium" v-on:click="searchTweets">Search</a>
       </div>
     </div>
     <div style="margin-top: 3%">
@@ -51,63 +67,71 @@
         <div class="container">
           <div class="box" v-for="tweet in tweets">
             <Tweet
-              :id="tweet.id"
+              :id="tweet.twitterId"
               :text="tweet.text"
-              :imageSrc="tweet['profile-image']"
+              :user="tweet.user"
+              :favorites="tweet.favorites"
+              :retweets="tweet.retweets"
             />
           </div>
         </div>
       </section>
     </div>
+    <loader :is-loading="isLoading"/>
   </div>
-
 </template>
 
 <script type="text/javascript">
   
   // import tweets from '../../static/tweets'
   import Tweet from '@/components/common/Tweet'
+  import Loader from '@/components/common/Loader'
 
   export default {
     name: 'twitter',
     components: {
-      Tweet
+      Tweet,
+      Loader
     },
     data () {
-      const tweets = [
-        {
-          'created_at': 'Sun Feb 25 18:11:01 +0000 2018',
-          'id': 967824267948773377,
-          'id_str': '967824267948773377',
-          'text': 'From pilot to astronaut, Robert H. Lawrence was the first African-American to be selected as an astronaut by any na… https://t.co/FjPEWnh804',
-          'truncated': true,
-          'profile-image': 'http://pbs.twimg.com/profile_images/188302352/nasalogo_twitter_normal.jpg'
-        },
-        {
-          'created_at': 'Sun Feb 25 18:11:01 +0000 2018',
-          'id': 967824267948773377,
-          'id_str': '967824267948773377',
-          'text': 'From pilot to astronaut, Robert H. Lawrence was the first African-American to be selected as an astronaut by any na… https://t.co/FjPEWnh804',
-          'truncated': true,
-          'profile-image': 'http://pbs.twimg.com/profile_images/188302352/nasalogo_twitter_normal.jpg'
-        },
-        {
-          'created_at': 'Sun Feb 25 18:11:01 +0000 2018',
-          'id': 967824267948773377,
-          'id_str': '967824267948773377',
-          'text': 'From pilot to astronaut, Robert H. Lawrence was the first African-American to be selected as an astronaut by any na… https://t.co/FjPEWnh804',
-          'truncated': true,
-          'profile-image': 'http://pbs.twimg.com/profile_images/188302352/nasalogo_twitter_normal.jpg'
-        }
-      ]
       return {
-        tweets
+        tweets: [],
+        users: {},
+        currentName: '',
+        searchWord: '',
+        isLoading: true
       }
     },
     methods: {
       goBack: function () {
         console.log('safo')
+      },
+      loadData: function () {
+        this.tweets = []
+        return this.$store.dispatch('get_tweets')
+          .then((info) => {
+            console.log(info)
+            this.tweets = info
+          })
+      },
+      searchTweets: function () {
+        if (this.searchWord) {
+          return this.$store.dispatch('search_tweets', {
+            word: this.searchWord
+          })
+            .then((info) => {
+              console.log(info)
+              this.tweets = info
+            })
+        }
       }
+    },
+    created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>
@@ -116,8 +140,8 @@
   
   .search-div {
     margin-top: 2%;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
 
 </style>

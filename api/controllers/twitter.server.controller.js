@@ -11,24 +11,26 @@ const client = new Twitter({
     access_token_secret: 'lKVnRuORvzYBBHCaPlzy8Fpr0swofu6eBOyCzJy2CZQcn'
 });
 
-var tweetsController = {};
+var twitterController = {};
 
 
-tweetsController.createTweetsByScreenName = function(req, res) {
+twitterController.createTweetsByScreenName = function(req, res) {
 
 	const params = {
 		screen_name: req.params.screenName,
 		count: 20,
 	}
 
+	console.log(params);
 	client.get('statuses/user_timeline', params)
 	.then(tweets => {
 		
 		for (var i in tweets){
-			var tweet = new Tweet(cleanTweet(tweets[1]));
+			var tweet = new Tweet(cleanTweet(tweets[i]));
 			user.tweets.push(tweet._id);
 			tweet.save(error => {
-				console.log(error);
+				if (error)
+					console.log(error);
 			})
 		}
 
@@ -38,13 +40,13 @@ tweetsController.createTweetsByScreenName = function(req, res) {
 	})
 	.catch(error => {
 		res.status(400).send({
-			error: error;
+			error: error
 		});
 	});
 }
 
 
-tweetsController.createTweetsByUserId = function(req, res) {
+twitterController.createTweetsByUserId = function(req, res) {
 
 	const params = {
 		user_id: req.params.twitterId,
@@ -55,10 +57,11 @@ tweetsController.createTweetsByUserId = function(req, res) {
 	.then(tweets => {
 		
 		for (var i in tweets){
-			var tweet = new Tweet(cleanTweet(tweets[1]));
+			var tweet = new Tweet(cleanTweet(tweets[i]));
 			user.tweets.push(tweet._id);
 			tweet.save(error => {
-				console.log(error);
+				if (error)
+					console.log(error);
 			})
 		}
 
@@ -68,13 +71,13 @@ tweetsController.createTweetsByUserId = function(req, res) {
 	})
 	.catch(error => {
 		res.status(400).send({
-			error: error;
+			error: error
 		});
 	});
 }
 
 
-tweetsController.getTweetsByUserId = function(req, res) {
+twitterController.getTweetsByUserId = function(req, res) {
 
 	Tweet.find({ 'user.twitterId': req.params.twitterId}, function(error, tweets) {
 		if (!error) {
@@ -93,7 +96,7 @@ tweetsController.getTweetsByUserId = function(req, res) {
 }
 
 
-tweetsController.searchTweetsByUserId = function(req, res) {
+twitterController.searchTweetsByUserId = function(req, res) {
 
 	Tweet.find({text: { $regex: '.*' + req.params.word + '.*', $options: 'i'}, 'user.twitterId': req.params.twitterId}, function(error, tweets) {
 		if (!error) {
@@ -111,7 +114,7 @@ tweetsController.searchTweetsByUserId = function(req, res) {
 	});
 }
 
-tweetsController.searchTweets = function(req, res) {
+twitterController.searchTweets = function(req, res) {
 
 	Tweet.find({text: { $regex: '.*' + req.params.word + '.*', $options: 'i'}}, function(error, tweets) {
 		if (!error) {
@@ -129,7 +132,7 @@ tweetsController.searchTweets = function(req, res) {
 	});
 }
 
-tweetsController.searchTweetsByScreenName = function(req, res) {
+twitterController.searchTweetsByScreenName = function(req, res) {
 
 	Tweet.find({text: { $regex: '.*' + req.params.word + '.*', $options: 'i'}, 'user.screen_name': req.params.screenName}, function(error, tweets) {
 		if (!error) {
@@ -148,7 +151,7 @@ tweetsController.searchTweetsByScreenName = function(req, res) {
 }
 
 
-tweetsController.deleteTweetsByUserId = function(req, res) {
+twitterController.deleteTweetsByUserId = function(req, res) {
 
 	Tweet.remove({'user.twitterId': req.params.twitterId}, function(err) {
 		if (erro) {
@@ -166,29 +169,8 @@ tweetsController.deleteTweetsByUserId = function(req, res) {
 }
 
 
-module.exports tweetsController;
+module.exports = twitterController;
 
-
-
-
-const cleanTweets = function(tweets) {
-
-	return  tweets.map(tweet => {
-
-		return {
-			created_at: tweet.created_at,
-			text: tweet.text,
-			user: {
-				id: tweet.user.id,
-				name: tweet.user.name,
-				screen_name: tweet.user.screen_name,
-				image: tweet.user.profile_image_url,
-			},
-			favorites: tweet.favorite_count,
-			retweets: tweet.retweet_count,
-		}
-	});
-}
 
 const cleanTweet = function(tweet) {
 

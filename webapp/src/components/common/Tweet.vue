@@ -4,13 +4,13 @@
     <article class="media">
       <figure class="media-left">
         <p class="image is-64x64">
-          <img :src="imageSrc" />
+          <img :src="user.image" />
         </p>
       </figure>
       <div clas="media-content">
         <div class="content">
           <p>
-            <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+            <strong>{{ user.name }}</strong> <small>@{{ user.screen_name}} </small> <small>31m</small>
             <br>
             {{ text }}
           </p>
@@ -22,9 +22,11 @@
             </a>
             <a class="level-item">
               <span class="icon is-small"><i class="fa fa-retweet"></i></span>
+              {{ retweets }}
             </a>
             <a class="level-item">
               <span class="icon is-small"><i class="fa fa-heart"></i></span>
+              {{ favorites }}
             </a>
           </div>
         </nav>
@@ -41,7 +43,7 @@
   export default {
     name: 'tweet',
     props: {
-      'id': {
+      'twitterId': {
         type: Number,
         default: 79526
       },
@@ -49,13 +51,19 @@
         type: String,
         default: ''
       },
-      'imageSrc': {
-        type: String,
-        default: '../../../static/imgs/defaultProfile.jpg'
+      'user': {
+        type: Object
+      },
+      'favorites': {
+        type: Number,
+        default: 0
+      },
+      'retweets': {
+        type: Number,
+        default: 0
       }
     },
     created: function () {
-      console.log(this.imageSrc)
     }
   }
 </script>

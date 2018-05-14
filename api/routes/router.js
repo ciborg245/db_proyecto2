@@ -4,7 +4,7 @@ const clientesController = require('../controllers/clientes')
 const productosController = require('../controllers/productos')
 const sucursalesController = require('../controllers/sucursales')
 const departamentosController = require('../controllers/departamentos')
-const twitterController = require('../controllers/twitter')
+const twitterController = require('../controllers/twitter.server.controller')
 const statisticsController = require('../controllers/statistics')
 
 router.get('/', function(req, res) {res.send("welcome")});
@@ -44,8 +44,9 @@ router.delete('/deleteDepartamento', departamentosController.deleteDepartamento)
 //Rutas para Twitter
 router.post('/twitter/name/:screenName', twitterController.createTweetsByScreenName)
 router.post('/twitter/id/:twitterId', twitterController.createTweetsByUserId)
+router.get('/twitter/tweets', twitterController.getTweets)
 router.get('/twitter/:twitterId', twitterController.getTweetsByUserId)
-router.get('/twitter/search/:word', twitterController.searchTweets);
+router.get('/twitter/search/:word', twitterController.searchTweets)
 router.get('/twitter/search/:twitterId/:word', twitterController.searchTweetsByUserId)
 router.get('/twitter/search/:screenName/:word', twitterController.searchTweetsByScreenName)
 router.delete('/twitter/:twitterId', twitterController.deleteTweetsByUserId)
