@@ -277,6 +277,7 @@
         if (this.stateIsSet) data.state = this.state
         if (this.clientTypeIsSet) data.clientType = this.clientType
         if (this.orderByName) data.orderby = 'nombre'
+        this.clients = []
         this.isLoading = true
         return this.$store.dispatch('clients_get', data)
           .then((clientes) => {
