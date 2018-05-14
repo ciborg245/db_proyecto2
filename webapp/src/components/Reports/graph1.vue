@@ -48,7 +48,7 @@
 
         </div>
         <div v-if="!isLoading">
-            <DoughnutChart :width="640" :height="160" :chart-data="chartData" :options="chartOptions"/>
+            <BarChart :width="640" :height="160" :chart-data="chartData" :options="chartOptions"/>
         </div>
 
       </div>
@@ -58,9 +58,8 @@
 </template>
 <script>
   import FormCheckbox from '@/components/common/FormCheckbox'
-  import BarChart from '@/components/common/BarChart'
   import LineChart from '@/components/common/LineChart'
-  import DoughnutChart from '@/components/common/DoughnutChart'
+  import BarChart from '@/components/common/BarChart'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
   export default {
@@ -71,11 +70,9 @@
       FormInput,
       LineChart,
       BarChart,
-      DoughnutChart,
       Loader
     },
 
-    // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
         gender: null,
@@ -84,7 +81,14 @@
         chartData: null,
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: true
+          maintainAspectRatio: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         },
         favoriteProducts: [],
         notificationMessage: null,
@@ -92,9 +96,6 @@
       }
     },
 
-    // Metodos de la Webapp
-    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
-    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
       makeReport: function () {
         this.isLoading = true
@@ -142,8 +143,8 @@
           {
             label: 'Producto favorito',
             data: data,
-            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(100, 162, 50, 0.4)', 'rgba(235, 62, 54, 0.4)', 'rgba(54, 162, 235, 0.6)'],
-            borderColor: 'white',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 0.6)',
             borderWidth: 1
           }
         )

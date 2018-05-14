@@ -103,9 +103,6 @@
       }
     },
 
-    // Metodos de la Webapp
-    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
-    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
       cancelConfirm: function () {
         this.toDelete = null
@@ -178,7 +175,7 @@
           {
             label: 'Departamentos',
             data: data,
-            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(100, 162, 50, 0.4)', 'rgba(235, 62, 54, 0.4)', 'rgba(54, 162, 235, 0.6)'],
+            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(100, 162, 50, 0.4)', 'rgba(235, 62, 54, 0.4)', 'rgba(54, 162, 235, 0.6)', 'rgba(235, 159, 45, 0.8)', 'rgba(230, 64, 180, 0.4)', 'rgba(235, 211, 127, 0.8)'],
             borderColor: 'white',
             borderWidth: 1
           }
