@@ -20,13 +20,12 @@ twitterController.createTweetsByScreenName = function(req, res) {
 		count: 20,
 	}
 
-	console.log(params);
 	client.get('statuses/user_timeline', params)
 	.then(tweets => {
 		
 		for (var i in tweets){
 			var tweet = new Tweet(cleanTweet(tweets[i]));
-			user.tweets.push(tweet._id);
+
 			tweet.save(error => {
 				if (error)
 					console.log(error);
@@ -57,7 +56,7 @@ twitterController.createTweetsByUserId = function(req, res) {
 		
 		for (var i in tweets){
 			var tweet = new Tweet(cleanTweet(tweets[i]));
-			user.tweets.push(tweet._id);
+
 			tweet.save(error => {
 				if (error)
 					console.log(error);
