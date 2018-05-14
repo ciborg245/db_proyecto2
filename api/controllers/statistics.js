@@ -252,6 +252,13 @@ statisticsController.clientTypeReport = function(req, res) {
     SELECT tipo_nombre, avg(limitecredito), min(limitecredito), max(limitecredito), count(*)
     FROM clientes_tipoclientes
     GROUP BY tipo_nombre`
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
 }
 
 //Detalle 4
@@ -285,6 +292,13 @@ statisticsController.ageReport = function(req, res) {
                             WHERE edad >= 60
                             GROUP BY productos_nombre)
     ORDER BY age_interval`
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
 }
 
 //Detalle 5

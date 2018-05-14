@@ -27,6 +27,8 @@ import Resumen5 from '@/components/Reports/resumen5'
 
 import Detalle1 from '@/components/Reports/detail1'
 import Detalle2 from '@/components/Reports/detail2'
+import Detalle3 from '@/components/Reports/detail3'
+import Detalle4 from '@/components/Reports/detail4'
 
 import ClientNewEdit from '@/components/ClientNewEdit'
 import StateNewEdit from '@/components/StateNewEdit'
@@ -167,6 +169,16 @@ export default new Router(
         path: '/detail2',
         name: 'Detalle2',
         component: Detalle2
+      },
+      {
+        path: '/detail3',
+        name: 'Detalle3',
+        component: Detalle3
+      },
+      {
+        path: '/detail4',
+        name: 'Detalle4',
+        component: Detalle4
       }
     ]
   },
