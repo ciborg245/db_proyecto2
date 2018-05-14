@@ -12,6 +12,30 @@
     <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
+          <div class="field">
+            <label class="label">Filtrar por categoría</label>
+            <div class="control">
+              <div class="select">
+                <select v-model="category" place-holder="Todos">
+                  <option>Todos</option>
+                  <option>dulce</option>
+                  <option>salado</option>
+                  <option>especial</option>
+                  <option>agridulce</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-left">
+            <div class="control">
+                <button class="button is-success" @click="applyFilters">Aplicar</button>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="box">
           <router-link :to="{ name: 'ProductNewEdit', }" class="button is-primary"> Agregar </router-link>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
@@ -24,7 +48,6 @@
             </thead>
             <tbody>
               <tr v-for="product in products">
-                <!-- <td> <a @click="gotoProduct(product.id)">{{product.id}}</a>  </td> -->
                 <td> {{product.id}} </td>
                 <td> {{product.name}} </td>
                 <td> {{product.price}} </td>
@@ -49,6 +72,24 @@
             </tbody>
           </table>
         </div>
+        <nav class="pagination" role="navigation" aria-label="pagination">
+          <a class="pagination-previous"
+            v-show="currentPage > 1"
+            @click="gotoPreviousPage">Anterior</a>
+          <a class="pagination-next"
+            @click="gotoNextPage"
+            v-show="currentPage < totalPages">
+            Siguiente</a>
+          <ul class="pagination-list">
+            <li v-for="page in totalPages">
+              <a class="pagination-link"
+              aria-label="Page 1"
+              aria-current="page"
+              :class="{'is-current': currentPage === page}"
+              @click="gotoPage(page)">{{page}}</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </section>
     <loader :is-loading="isLoading"/>
@@ -76,20 +117,22 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        products: [
-          {
-            id: 1,
-            name: 'Producto X',
-            price: 12.0
-          }],
+        products: [],
         notificationMessage: null,
+        currentPage: 1,
+        totalPages: 1,
+        category: null,
         isLoading: false,
         showConfirm: false,
         toDelete: null,
         confirmMsg: null
       }
     },
-
+    computed: {
+      categoryIsSet: function () {
+        return this.category !== null
+      }
+    },
     methods: {
       gotoProduct: function (id) {
         this.$router.push({ name: 'ProductNewEdit', query: {product: id} })
@@ -99,10 +142,58 @@
         this.showConfirm = false
       },
       loadData: function () {
-        this.products
+        this.products = []
         return this.$store.dispatch('products_get')
           .then((products) => {
-            this.products = products
+            this.totalPages = Math.ceil(products.length / 25)
+            for (let i = 0; i < products.length; i++) {
+              if (i >= ((this.currentPage - 1) * 25) && i < this.currentPage * 25) {
+                this.products.push(products[i])
+              }
+            }
+          })
+      },
+      gotoNextPage: function () {
+        this.currentPage++
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPreviousPage: function () {
+        this.currentPage--
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPage: function (num) {
+        this.currentPage = num
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      applyFilters: function () {
+        let data = {}
+        if (this.categoryIsSet) {
+          if (this.category !== 'Todos') data.category = this.category
+        }
+        this.isLoading = true
+        return this.$store.dispatch('products_get', data)
+          .then((products) => {
+            this.totalPages = Math.ceil(products.length / 25)
+            for (let i = 0; i < products.length; i++) {
+              if (i >= ((this.currentPage - 1) * 25) && i < this.currentPage * 25) {
+                this.products.push(products[i])
+              }
+            }
+          })
+          .then(() => {
+            this.isLoading = false
           })
       },
       confirmDelete: function (id) {

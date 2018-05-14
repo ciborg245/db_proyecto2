@@ -223,7 +223,7 @@
                   clientes[i].clientType = type.text
                 }
               }
-              if (i > (this.currentPage - 1) * 25 && i < this.currentPage * 25) {
+              if (i >= (this.currentPage - 1) * 25 && i < this.currentPage * 25) {
                 this.clients.push(clientes[i])
               }
             }
@@ -280,19 +280,22 @@
         this.isLoading = true
         return this.$store.dispatch('clients_get', data)
           .then((clientes) => {
-            for (const cliente of clientes) {
+            this.totalPages = Math.ceil(clientes.length / 25)
+            for (let i = 0; i < clientes.length; i++) {
               for (const state of this.states) {
-                if (state.value === cliente.state) {
-                  cliente.state = state.text
+                if (state.value === clientes[i].state) {
+                  clientes[i].state = state.text
                 }
               }
               for (const type of this.clientTypes) {
-                if (type.value === cliente.clientType) {
-                  cliente.clientType = type.text
+                if (type.value === clientes[i].clientType) {
+                  clientes[i].clientType = type.text
                 }
               }
+              if (i >= (this.currentPage - 1) * 25 && i < this.currentPage * 25) {
+                this.clients.push(clientes[i])
+              }
             }
-            this.clients = clientes
           })
           .then(() => {
             this.isLoading = false
