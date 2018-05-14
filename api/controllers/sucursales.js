@@ -53,8 +53,6 @@ sucursalesController.getSucursales = function(req, res) {
         query += ` ORDER BY ${req.query.orderby} `
     }
 
-    query += ` LIMIT 25 `;
-
     if (req.query.offset) {
         query += ` OFFSET ${req.query.offset} `
     }

@@ -85,6 +85,24 @@
               </tr>
             </tbody>
           </table>
+          <nav class="pagination" role="navigation" aria-label="pagination">
+            <a class="pagination-previous"
+              v-show="currentPage > 1"
+              @click="gotoPreviousPage">Anterior</a>
+            <a class="pagination-next"
+              @click="gotoNextPage"
+              v-show="currentPage < totalPages">
+              Siguiente</a>
+            <ul class="pagination-list">
+              <li v-for="page in totalPages">
+                <a class="pagination-link"
+                aria-label="Page 1"
+                aria-current="page"
+                :class="{'is-current': currentPage === page}"
+                @click="gotoPage(page)">{{page}}</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </section>
@@ -118,6 +136,8 @@
         clients: [],
         states: [],
         clientTypes: [],
+        currentPage: 1,
+        totalPages: 0,
         nameSearch: null,
         clientType: null,
         state: null,
@@ -191,19 +211,46 @@
         this.clients = []
         return this.$store.dispatch('clients_get')
           .then((clientes) => {
-            for (const cliente of clientes) {
+            this.totalPages = Math.ceil(clientes.length / 25)
+            for (let i = 0; i < clientes.length; i++) {
               for (const state of this.states) {
-                if (state.value === cliente.state) {
-                  cliente.state = state.text
+                if (state.value === clientes[i].state) {
+                  clientes[i].state = state.text
                 }
               }
               for (const type of this.clientTypes) {
-                if (type.value === cliente.clientType) {
-                  cliente.clientType = type.text
+                if (type.value === clientes[i].clientType) {
+                  clientes[i].clientType = type.text
                 }
               }
+              if (i > (this.currentPage - 1) * 25 && i < this.currentPage * 25) {
+                this.clients.push(clientes[i])
+              }
             }
-            this.clients = clientes
+          })
+      },
+      gotoNextPage: function () {
+        this.currentPage++
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPreviousPage: function () {
+        this.currentPage--
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPage: function (num) {
+        this.currentPage = num
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
           })
       },
       confirmDelete: function (id) {

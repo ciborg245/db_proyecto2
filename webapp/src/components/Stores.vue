@@ -45,6 +45,24 @@
               </tr>
             </tbody>
           </table>
+          <nav class="pagination" role="navigation" aria-label="pagination">
+            <a class="pagination-previous"
+              v-show="currentPage > 1"
+              @click="gotoPreviousPage">Anterior</a>
+            <a class="pagination-next"
+              @click="gotoNextPage"
+              v-show="currentPage < totalPages">
+              Siguiente</a>
+            <ul class="pagination-list">
+              <li v-for="page in totalPages">
+                <a class="pagination-link"
+                aria-label="Page 1"
+                aria-current="page"
+                :class="{'is-current': currentPage === page}"
+                @click="gotoPage(page)">{{page}}</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </section>
@@ -74,6 +92,9 @@
     data () {
       return {
         stores: [],
+        states: [],
+        currentPage: 1,
+        totalPages: 0,
         notificationMessage: null,
         isLoading: false,
         showConfirm: false,
@@ -94,9 +115,48 @@
         this.showConfirm = false
       },
       loadData: function () {
-        return this.$store.dispatch('stores_get')
-          .then((stores) => {
-            this.stores = stores
+        this.stores = []
+        return this.$store.dispatch('states_get')
+          .then((states) => {
+            this.states = states
+            return this.$store.dispatch('stores_get')
+          })
+          .then((tiendas) => {
+            this.totalPages = Math.ceil(tiendas.length / 25)
+            for (let i = 0; i < tiendas.length; i++) {
+              for (const state of this.states) {
+                if (state.id === tiendas[i]['id_depto']) {
+                  tiendas[i]['id_depto'] = state.nombre
+                }
+              }
+              if (i > (this.currentPage - 1) * 25 && i < this.currentPage * 25) {
+                this.stores.push(tiendas[i])
+              }
+            }
+          })
+      },
+      gotoNextPage: function () {
+        this.currentPage++
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPreviousPage: function () {
+        this.currentPage--
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
+          })
+      },
+      gotoPage: function (num) {
+        this.currentPage = num
+        this.isLoading = true
+        return this.loadData()
+          .then(() => {
+            this.isLoading = false
           })
       },
       confirmDelete: function (id) {

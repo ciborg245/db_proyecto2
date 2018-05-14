@@ -120,11 +120,6 @@ clientesController.getClientes = function(req, res) {
       query += ` ORDER BY id `
     }
 
-    query += ` LIMIT 25 `;
-
-    if (req.query.offset) {
-        query += ` OFFSET ${req.params.offset} `
-    }
 
     //Se realiza el query
     db.sequelize.query(query, {model: clientes}).then(rows => {
