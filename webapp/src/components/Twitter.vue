@@ -110,7 +110,6 @@
         this.tweets = []
         return this.$store.dispatch('get_tweets')
           .then((info) => {
-            console.log(info)
             this.tweets = info
           })
       },
@@ -120,7 +119,6 @@
             word: this.searchWord
           })
             .then((info) => {
-              console.log(info)
               this.tweets = info
             })
         }

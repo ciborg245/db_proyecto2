@@ -5,7 +5,7 @@ module.exports = function() {
 	
 	const db = mongoose.connect('mongodb://panito:fresh@ds133964.mlab.com:33964/panitofresh');
 
-	require('./models/tweet.server.model');
+	require('./modelosOP/tweet.server.model');
 
 	return db;
 }

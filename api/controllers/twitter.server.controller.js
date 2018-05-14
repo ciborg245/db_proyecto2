@@ -1,6 +1,5 @@
 
 const Tweet = require('mongoose').model('Tweet');
-const User = require('mongoose').model('User');
 const Twitter = require('twitter');
 
 
@@ -73,6 +72,24 @@ twitterController.createTweetsByUserId = function(req, res) {
 		res.status(400).send({
 			error: error
 		});
+	});
+}
+
+twitterController.getTweets = function(req, res) {
+
+	Tweet.find({}, function(error, tweets) {
+		if (!error) {
+			res.status(200).send({
+				success: true,
+				tweets: tweets,
+			});
+		} else {
+			res.status(200).send({
+				success: true,
+				tweets: []
+			});
+		}
+
 	});
 }
 

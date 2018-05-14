@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const routes = require('./routes/router')
+
 const configureMongoose = require('./mongoose');
-
-
 const db = configureMongoose();
+
+const routes = require('./routes/router')
 const app = express();
 
 // app.set('view engine', 'ejs');
