@@ -148,6 +148,9 @@ const actions = {
       if (data.clientType) {
         url = url + '&type=' + data.clientType
       }
+      if (data.nameSearch) {
+        url = url + '&name=' + data.nameSearch
+      }
     }
 
     return new Promise((resolve, reject) => {

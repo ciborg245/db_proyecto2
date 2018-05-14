@@ -12,7 +12,8 @@
     <section style="margin-top: 10px" v-show="!isLoading">
       <div class="container">
         <div class="box">
-          <FormInput label="Nombre"/>
+          <FormInput type="text"
+          label="Nombre" v-model="nameSearch"/>
           <FormCheckbox label="Ordenar por nombre"
           v-model="orderByName"/>
           <FormSelectWithSearch
@@ -117,6 +118,7 @@
         clients: [],
         states: [],
         clientTypes: [],
+        nameSearch: null,
         clientType: null,
         state: null,
         notificationMessage: null,
@@ -129,6 +131,9 @@
     },
 
     computed: {
+      nameSearchIsSet: function () {
+        return this.nameSearch !== null
+      },
       stateIsSet: function () {
         return this.state !== null
       },
@@ -221,8 +226,9 @@
       },
       applyFilters: function () {
         let data = {}
-        if (this.stateIsSet) data.state = this.state || null
-        if (this.clientTypeIsSet) data.clientType = this.clientType || null
+        if (this.nameSearchIsSet) data.nameSearch = this.nameSearch
+        if (this.stateIsSet) data.state = this.state
+        if (this.clientTypeIsSet) data.clientType = this.clientType
         if (this.orderByName) data.orderby = 'nombre'
         this.isLoading = true
         return this.$store.dispatch('clients_get', data)
