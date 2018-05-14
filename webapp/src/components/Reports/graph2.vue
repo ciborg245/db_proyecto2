@@ -54,10 +54,6 @@
       </div>
     </section>
     <loader :is-loading="isLoading"/>
-    <confirm-modal :show-confirm="showConfirm"
-                   confirm-msg="¿Realmente desea eliminar este cliente?"
-                   @accept="deleteClient"
-                   @cancel="cancelConfirm"/>
   </div>
 </template>
 <script>
@@ -65,7 +61,7 @@
   import PieChart from '@/components/common/PieChart'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
-  import ConfirmModal from '@/components/common/ConfirmModal'
+
   export default {
     name: 'dashboard',
 
@@ -73,11 +69,9 @@
       FormCheckbox,
       FormInput,
       PieChart,
-      ConfirmModal,
       Loader
     },
 
-    // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
         gender: null,
@@ -97,33 +91,7 @@
       }
     },
 
-    // Metodos de la Webapp
-    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
-    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
-      cancelConfirm: function () {
-        this.toDelete = null
-        this.showConfirm = false
-      },
-      confirmDelete: function (id) {
-        this.toDelete = id
-        this.showConfirm = true
-      },
-      deleteClient: function () {
-        this.showConfirm = false
-        return this
-          .$store.dispatch('client_delete', {
-            clientId: this.toDelete
-          })
-          .then(() => {
-            this.toDelete = null
-            return this.loadData()
-          })
-          .catch(err => {
-            console.log(err)
-            // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
-          })
-      },
       makeReport: function () {
         this.isLoading = true
         let gender

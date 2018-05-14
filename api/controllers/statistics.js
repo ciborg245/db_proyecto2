@@ -131,7 +131,7 @@ statisticsController.storesByState = function(req, res) {
 }
 
 //Resumen 2
-statisticsController.total = function(req, res) {
+statisticsController.creditByState = function(req, res) {
     let query = `
     SELECT 'Clientes' as "categoria", count(id)  as "Total"
     FROM clientes_view

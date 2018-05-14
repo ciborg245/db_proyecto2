@@ -15,18 +15,16 @@
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th>Departamento</th>
-                <th>Clientes nuevos este mes</th>
-                <th>Clientes nuevos este año</th>
-                <th>Cantidad de clientes en total</th>
+                <th>Categoría</th>
+                <th>Mes anterior</th>
+                <th>Año anterior</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="state in states">
-                <td> {{state['departamentos_nombre']}} </td>
-                <td> {{state['new_clients_month']}} </td>
-                <td> {{state['new_clients_year']}} </td>
-                <td> {{state['total_clients']}} </td>
+              <tr v-for="report in reports">
+                <td> {{report['categoria']}} </td>
+                <td> {{report.lastMonth}} </td>
+                <td> {{report.lastYear}} </td>
               </tr>
             </tbody>
           </table>
@@ -39,16 +37,15 @@
 <script>
   import Loader from '@/components/common/Loader'
   export default {
-    name: 'dashboard',
+    name: 'detail4',
 
     components: {
       Loader
     },
 
-    // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        states: [],
+        reports: [],
         isLoading: false,
         confirmMsg: null
       }
@@ -57,9 +54,9 @@
     methods: {
       loadData: function () {
         this.states = []
-        return this.$store.dispatch('detalle2_get')
-          .then((states) => {
-            this.states = states
+        return this.$store.dispatch('detalle5_get')
+          .then((reports) => {
+            this.reports = reports
           })
       }
     },

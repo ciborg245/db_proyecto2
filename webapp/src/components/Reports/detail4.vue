@@ -45,7 +45,6 @@
       Loader
     },
 
-    // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
         reports: [],
@@ -54,9 +53,6 @@
       }
     },
 
-    // Metodos de la Webapp
-    // ExecuteQuery, manda la query actual al sevidor y espera la respuesta
-    // CheckIfDrop, chequea si hay un DROP TABLE y pregunta si realmente quiere eliminar la tabla
     methods: {
       loadData: function () {
         this.states = []
