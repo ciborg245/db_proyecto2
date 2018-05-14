@@ -131,8 +131,19 @@ statisticsController.storesByState = function(req, res) {
 }
 
 //Resumen 2
-statisticsController.creditByState = function(req, res) {
-    let query = "SELECT departamentos_nombre, sum(limitecredito) FROM clientes_departamentos GROUP BY departamentos_nombre";
+statisticsController.total = function(req, res) {
+    let query = `
+    SELECT 'Clientes' as "categoria", count(id)  as "Total"
+    FROM clientes_view
+    UNION
+    SELECT 'Productos' as "categoria", count(id) as "Total"
+    FROM productos_view
+    UNION
+    SELECT 'Categoria de productos' as "categoria", count(DISTINCT categoria) as "Total"
+    FROM productos_view
+    UNION
+    SELECT 'Sucursales' as "categoria", count(id) as "Total"
+    FROM sucursales_view`;
 
     db.sequelize.query(query).then(rows => {
         res.send({
@@ -251,7 +262,7 @@ statisticsController.clientTypeReport = function(req, res) {
     let query = `
     SELECT tipo_nombre, avg(limitecredito), min(limitecredito), max(limitecredito), count(*)
     FROM clientes_tipoclientes
-    GROUP BY tipo_nombre`
+    GROUP BY tipo_nombre`;
 
     db.sequelize.query(query).then(rows => {
         res.send({
@@ -291,7 +302,7 @@ statisticsController.ageReport = function(req, res) {
                             FROM clientes_productos
                             WHERE edad >= 60
                             GROUP BY productos_nombre)
-    ORDER BY age_interval`
+    ORDER BY age_interval`;
 
     db.sequelize.query(query).then(rows => {
         res.send({
@@ -302,6 +313,25 @@ statisticsController.ageReport = function(req, res) {
 }
 
 //Detalle 5
-statisticsController
+statisticsController.productsReport = function(req, res) {
+    let query = `
+    SELECT b1.categoria, b1.count as "lastMonth", b2.count as "lastYear"
+    FROM    (SELECT categoria, TRUNC((CURRENT_DATE - "createdAt"::date) / 30) as "interv", count(id)
+            FROM productos_view
+            GROUP BY interv, categoria) b1,
+            (SELECT categoria, TRUNC((CURRENT_DATE - "createdAt"::date) / 365) as "interv", count(id)
+            FROM productos_view
+            GROUP BY interv, categoria) b2
+    WHERE b1.interv = 0
+    AND b2.interv = 0
+    AND b1.categoria = b2.categoria`;
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
 
 module.exports = statisticsController;
