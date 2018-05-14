@@ -178,6 +178,7 @@
           })
       },
       applyFilters: function () {
+        this.products = []
         let data = {}
         if (this.categoryIsSet) {
           if (this.category !== 'Todos') data.category = this.category

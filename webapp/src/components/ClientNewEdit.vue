@@ -395,7 +395,7 @@
           favoriteProduct: this.favoriteProduct
         }
         if (this.birthdateIsSet) {
-          data.birthdate = this.birthDate
+          data.birthdate = Moment(this.birthDate).format('YYYY-MM-DD')
         }
         if (this.imageIsSet) {
           data.image = this.image
