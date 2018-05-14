@@ -7,9 +7,9 @@ const actions = {
   create_tweets_screnname (context, data = {}) {
     const env = config.env
     const apiRoot = config[env].apiRoot
-    const screenName = data.screen_name || ''
+    const screenName = data['screen_name'] || ''
     let url = apiRoot + config.apiTwitterName
-    url = url.replace('{clientId}', screenName)
+    url = url.replace('{screen_name}', screenName)
 
     return new Promise((resolve, reject) => {
       api.post(url)

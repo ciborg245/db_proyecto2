@@ -438,12 +438,23 @@
           dispatch = 'client_new'
         }
         this.isSubmitting = true
-        return this
-          .$store.dispatch(dispatch, data)
-          .then((response) => {
-            console.log(response)
-            this.isSubmitting = false
-            this.$router.push({name: 'Clients'})
+        return Promise.resolve()
+          .then(() => {
+            if (!this.isEdit) {
+              if (this.twitterIdIsValid) {
+                return this.$store.dispatch('create_tweets_screnname', {'screen_name': this.twitterId})
+              }
+            }
+            return
+          })
+          .then(() => {
+            return this
+              .$store.dispatch(dispatch, data)
+              .then((response) => {
+                console.log(response)
+                this.isSubmitting = false
+                this.$router.push({name: 'Clients'})
+              })
           })
           .catch(err => {
             this.isSubmitting = false
