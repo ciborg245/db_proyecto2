@@ -138,8 +138,20 @@ const actions = {
   clients_get (context, data = {}) {
     const env = config.env
     const apiRoot = config[env].apiRoot
+    const orderby = data.orderby || 'id'
+    let url = apiRoot + config.apiClients + '?orderby=' + orderby
 
-    let url = apiRoot + config.apiClients
+    if (data) {
+      if (data.state) {
+        url = url + '&state=' + data.state
+      }
+      if (data.clientType) {
+        url = url + '&type=' + data.clientType
+      }
+      if (data.nameSearch) {
+        url = url + '&name=' + data.nameSearch
+      }
+    }
 
     return new Promise((resolve, reject) => {
       api

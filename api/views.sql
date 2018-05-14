@@ -4,7 +4,7 @@ FROM clientes
 JOIN productos ON (clientes.id_producto = productos.id)
 
 CREATE VIEW clientes_departamentos AS
-SELECT clientes.id, clientes.nombre as "cliente_nombre", TRUNC((CURRENT_DATE - fechanacimiento) / 365) as "edad", genero, fechanacimiento, limitecredito, departamentos.nombre as "departamentos_nombre"
+SELECT clientes.id, clientes.nombre as "cliente_nombre", TRUNC((CURRENT_DATE - fechanacimiento) / 365) as "edad", genero, fechanacimiento, limitecredito, clientes."createdAt", departamentos.nombre as "departamentos_nombre"
 FROM clientes
 JOIN departamentos ON (clientes.id_depto = departamentos.id)
 
@@ -35,3 +35,15 @@ SELECT clientes.nombre as "cliente_nombre", TRUNC((CURRENT_DATE - fechanacimient
 FROM clientes
 JOIN productos ON (clientes.id_producto = productos.id)
 JOIN tipoclientes ON (clientes.id_tipocliente = tipoclientes.id)
+
+CREATE VIEW clientes_view AS
+SELECT *
+FROM clientes
+
+CREATE VIEW productos_view AS
+SELECT *
+FROM productos
+
+CREATE VIEW sucursales_view AS
+SELECT *
+FROM sucursales

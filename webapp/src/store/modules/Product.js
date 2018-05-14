@@ -35,6 +35,9 @@ const actions = {
     const apiRoot = config[env].apiRoot
 
     let url = apiRoot + config.apiProducts
+    if (data.category) {
+      url = url + '?category=' + data.category
+    }
 
     return new Promise((resolve, reject) => {
       api

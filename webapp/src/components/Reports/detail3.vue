@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Productos favoritos por género
+            Detalle de crédito por tipo de cliente
           </h1>
         </div>
       </div>
@@ -15,16 +15,18 @@
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th>Género</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
+                <th>Tipo de cliente</th>
+                <th>Crédito promedio</th>
+                <th>Crédito mínimo</th>
+                <th>Crédito máximo</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="state in states">
-                <td> {{state.genero}} </td>
-                <td> {{state['productos_nombre']}} </td>
-                <td> {{state.count}} </td>
+              <tr v-for="report in reports">
+                <td> {{report['tipo_nombre']}} </td>
+                <td> {{report['avg']}} </td>
+                <td> {{report['min']}} </td>
+                <td> {{report['max']}} </td>
               </tr>
             </tbody>
           </table>
@@ -37,7 +39,7 @@
 <script>
   import Loader from '@/components/common/Loader'
   export default {
-    name: 'dashboard',
+    name: 'detail3',
 
     components: {
       Loader
@@ -46,18 +48,18 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
-        states: [],
-        notificationMessage: null,
-        isLoading: false
+        reports: [],
+        isLoading: false,
+        confirmMsg: null
       }
     },
 
     methods: {
       loadData: function () {
         this.states = []
-        return this.$store.dispatch('resumen5_get')
-          .then((states) => {
-            this.states = states
+        return this.$store.dispatch('detalle3_get')
+          .then((reports) => {
+            this.reports = reports
           })
       }
     },

@@ -56,7 +56,7 @@
         </div>
         <div class="column is-one-fifth">
           <router-link :to="{name: 'Resumen2'}" class="box caja">
-            Crédito por departamento
+            Cantidades totales
           </router-link>
         </div>
         <div class="column is-one-fifth">
@@ -83,6 +83,15 @@
         </div>
         <div class="column is-one-fifth">
           <router-link :to="{ name: 'Detalle2'}" class="box caja">Detalle nuevos clientes</router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{ name: 'Detalle3'}" class="box caja">Crédito por tipo de cliente</router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{ name: 'Detalle4'}" class="box caja">Crédito y producto por edad</router-link>
+        </div>
+        <div class="column is-one-fifth">
+          <router-link :to="{ name: 'Detalle5'}" class="box caja">Productos nuevos por fecha</router-link>
         </div>
       </div>
     </div>

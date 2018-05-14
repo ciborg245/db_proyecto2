@@ -129,7 +129,7 @@ const actions = {
     const env = config.env
     const apiRoot = config[env].apiRoot
 
-    let url = apiRoot + '/creditByState'
+    let url = apiRoot + '/total'
 
     return new Promise((resolve, reject) => {
       api.get(url)
@@ -205,6 +205,51 @@ const actions = {
     const apiRoot = config[env].apiRoot
 
     let url = apiRoot + '/newClientsByState'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  detalle3_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/clientTypeReport'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  detalle4_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/ageReport'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data.rows[0])
+        })
+        .catch(err => reject(err))
+    })
+  },
+  detalle5_get (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + '/productsReport'
 
     return new Promise((resolve, reject) => {
       api.get(url)

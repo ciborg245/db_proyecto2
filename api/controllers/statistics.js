@@ -132,7 +132,18 @@ statisticsController.storesByState = function(req, res) {
 
 //Resumen 2
 statisticsController.creditByState = function(req, res) {
-    let query = "SELECT departamentos_nombre, sum(limitecredito) FROM clientes_departamentos GROUP BY departamentos_nombre";
+    let query = `
+    SELECT 'Clientes' as "categoria", count(id)  as "Total"
+    FROM clientes_view
+    UNION
+    SELECT 'Productos' as "categoria", count(id) as "Total"
+    FROM productos_view
+    UNION
+    SELECT 'Categoria de productos' as "categoria", count(DISTINCT categoria) as "Total"
+    FROM productos_view
+    UNION
+    SELECT 'Sucursales' as "categoria", count(id) as "Total"
+    FROM sucursales_view`;
 
     db.sequelize.query(query).then(rows => {
         res.send({
@@ -247,6 +258,80 @@ statisticsController.newClientsByState = function(req, res) {
 }
 
 //Detalle 3
+statisticsController.clientTypeReport = function(req, res) {
+    let query = `
+    SELECT tipo_nombre, avg(limitecredito), min(limitecredito), max(limitecredito), count(*)
+    FROM clientes_tipoclientes
+    GROUP BY tipo_nombre`;
 
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
+
+//Detalle 4
+statisticsController.ageReport = function(req, res) {
+    let query = `
+    SELECT (b2.interv * 10) as "age_interval", productos_nombre, b3.avg, b3.count as "clientes"
+    FROM (SELECT TRUNC(edad / 10) as "interv", productos_nombre, count(id)
+            FROM clientes_productos
+            GROUP BY interv, productos_nombre) b2,
+            (SELECT TRUNC(edad / 10) as "interv", count(id), avg(limitecredito)
+            FROM clientes_productos
+            GROUP BY interv) b3
+    WHERE b2.count >= ALL (SELECT count(b1.id)
+                            FROM (SELECT TRUNC(edad / 10) as "interv", productos_nombre, id
+                                    FROM clientes_productos) b1
+                            WHERE b1.productos_nombre = b2.productos_nombre
+                            GROUP BY b1.interv, b1.productos_nombre)
+    AND b2.interv >= 1 AND b2.interv < 6
+    AND b2.interv = b3.interv
+    UNION
+    SELECT 60 as "age_interval", productos_nombre, avg, b3.count as "clientes"
+    FROM(SELECT productos_nombre, count(id)
+            FROM clientes_productos
+            WHERE edad >= 60
+            GROUP BY productos_nombre) b1,
+            (SELECT count(id), avg(limitecredito)
+            FROM clientes_productos
+            WHERE edad >= 60) b3
+    WHERE b1.count >= ALL (SELECT count(id)
+                            FROM clientes_productos
+                            WHERE edad >= 60
+                            GROUP BY productos_nombre)
+    ORDER BY age_interval`;
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
+
+//Detalle 5
+statisticsController.productsReport = function(req, res) {
+    let query = `
+    SELECT b1.categoria, b1.count as "lastMonth", b2.count as "lastYear"
+    FROM    (SELECT categoria, TRUNC((CURRENT_DATE - "createdAt"::date) / 30) as "interv", count(id)
+            FROM productos_view
+            GROUP BY interv, categoria) b1,
+            (SELECT categoria, TRUNC((CURRENT_DATE - "createdAt"::date) / 365) as "interv", count(id)
+            FROM productos_view
+            GROUP BY interv, categoria) b2
+    WHERE b1.interv = 0
+    AND b2.interv = 0
+    AND b1.categoria = b2.categoria`;
+
+    db.sequelize.query(query).then(rows => {
+        res.send({
+            success: true,
+            rows: rows
+        });
+    }).catch(error => res.send({success: false, msg: error}))
+}
 
 module.exports = statisticsController;
