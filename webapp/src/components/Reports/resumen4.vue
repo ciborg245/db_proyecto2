@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Productos favoritos por departamento
+            Productos favoritos por tipo de cliente
           </h1>
         </div>
       </div>

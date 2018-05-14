@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Sucursales por departamento
+            Crédito por departamento
           </h1>
         </div>
       </div>

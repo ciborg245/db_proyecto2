@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Crédito total por departamento
+            Resumen total
           </h1>
         </div>
       </div>

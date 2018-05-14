@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Clientes nuevos
+            Detalle crédito y producto por rango de edad
           </h1>
         </div>
       </div>
@@ -23,7 +23,7 @@
             </thead>
             <tbody>
               <tr v-for="report in reports">
-                <td> {{report['age_interval']}} </td>
+                <td> &lt; {{report['age_interval']}} </td>
                 <td> {{report['avg']}} </td>
                 <td> {{report['productos_nombre']}} </td>
                 <td> {{report['clientes']}} </td>

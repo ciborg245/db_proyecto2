@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Clientes nuevos
+            Productos nuevos
           </h1>
         </div>
       </div>
