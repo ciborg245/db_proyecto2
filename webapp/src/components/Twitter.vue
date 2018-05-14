@@ -14,7 +14,7 @@
       </div>
     </section>
     <div class="columns search-div">
-      <div class="column is-two-fifths">
+      <div class="column is-three-quarters">
         <div class="control is-medium has-icons-left">
           <input class="input is-medium is-rounded" v-model="searchWord" type="text" placeholder="Text">
           <span class="icon is-medium is-left">
@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <div class="column is-two-fifths">
+      <!-- <div class="column is-two-fifths">
         <div class="dropdown is-active">
           <div class="dropdown-trigger">
             <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="column">
         <a class="button is-info is-medium" v-on:click="searchTweets">Search</a>
       </div>
@@ -47,19 +47,19 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Tweets</p>
-            <p class="title">325</p>
+            <p class="title">{{ tweetCount }}</p>
           </div>
         </div>
         <div class="level-item nas-text-centered">
           <div>
-            <p class="heading">Events</p>
-            <p class="title">53</p>
+            <p class="heading">Users</p>
+            <p class="title">{{ usersCount }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Matches</p>
-            <p class="title">384</p>
+            <p class="heading">Words</p>
+            <p class="title">{{ matchCount }}</p>
           </div>
         </div>
       </nav>
@@ -99,6 +99,10 @@
         users: {},
         currentName: '',
         searchWord: '',
+        matchCount: 0,
+        usersT: [],
+        usersCount: 0,
+        tweetCount: 0,
         isLoading: true
       }
     },
@@ -113,15 +117,33 @@
             this.tweets = info
           })
       },
+      calculateInfo: function () {
+        this.matchCount = 0
+        this.usersT = []
+        this.tweetCount = 0
+        for (const tweet of this.tweets) {
+          // console.log(tweet)
+          this.tweetCount++
+          this.matchCount += (tweet.text.match(new RegExp(this.searchWord, 'gi')) || []).length
+          console.log(this.matchCount)
+          if (!this.usersT || !this.usersT.includes(tweet.user.id)) {
+            this.usersT.push(tweet.user.id)
+          }
+        }
+        this.usersCount = this.usersT.length
+      },
       searchTweets: function () {
+        this.tweets = []
         if (this.searchWord) {
           return this.$store.dispatch('search_tweets', {
             word: this.searchWord
           })
             .then((info) => {
               this.tweets = info
+              this.calculateInfo()
             })
         }
+        this.calculateInfo()
       }
     },
     created: function () {
