@@ -52,6 +52,8 @@ departamentosController.getDepartamentos = function(req, res) {
     //Se agrega un ORDER BY, un LIMIT y un OFFSET
     if (req.query.orderby) {
         query += ` ORDER BY ${req.params.orderby} `
+    } else {
+        query += ` ORDER BY id `
     }
 
     query += ` LIMIT 25 `;
