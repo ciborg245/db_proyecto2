@@ -3,12 +3,7 @@ const Tweet = require('mongoose').model('Tweet');
 const Twitter = require('twitter');
 
 
-const client = new Twitter({
-    consumer_key: '2eIK8c3fujiizlga6tjOjMvvW',
-    consumer_secret: 'aqKkZaMjqe6agf6WgyFUUbt3bBLkad7nM6gxya37cDU8NnJ6I2',
-    access_token_key: '966478441557184513-FDl8UtTkAxmaicaTMBL23k8wUd9Ndd8',
-    access_token_secret: 'lKVnRuORvzYBBHCaPlzy8Fpr0swofu6eBOyCzJy2CZQcn'
-});
+
 
 var twitterController = {};
 
